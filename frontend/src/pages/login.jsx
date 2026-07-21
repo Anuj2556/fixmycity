@@ -7,6 +7,7 @@ function Login() {
         username: '',
         password: '',
     });
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -26,99 +27,197 @@ function Login() {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <h2 style={styles.title}>FixMyCity</h2>
-                <p style={styles.subtitle}>Login to your account</p>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        style={styles.input}
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        style={styles.input}
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        onChange={handleChange}
-                        required
-                    />
-                    <button style={styles.button} type="submit">
-                        Login
-                    </button>
-                </form>
-                {error && <p style={styles.error}>{error}</p>}
-                <p style={styles.link}>
-                    New user? <a href="/register">Register here</a>
-                </p>
+        <div style={styles.body}>
+            <div style={styles.container}>
+                <div style={styles.headerSection}>
+                    <h1 style={styles.brand}>Fix<span style={styles.brandAccent}>My</span>City</h1>
+                    <p style={styles.subtitle}>Login to your account</p>
+                </div>
+
+                <div style={styles.formCard}>
+                    <form onSubmit={handleSubmit}>
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>Username <span style={styles.required}>*</span></label>
+                            <input
+                                style={styles.input}
+                                type="text"
+                                name="username"
+                                placeholder="Enter your username"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>Password <span style={styles.required}>*</span></label>
+                            <div style={styles.passwordContainer}>
+                                <input
+                                    style={styles.passwordInput}
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    style={styles.eyeButton}
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? '🙈' : '👁️'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <button style={styles.submitBtn} type="submit">
+                            Login
+                        </button>
+                    </form>
+
+                    {error && (
+                        <div style={styles.messageError}>
+                            ❌ {error}
+                        </div>
+                    )}
+
+                    <p style={styles.link}>
+                        New user? <a href="/register" style={styles.linkAnchor}>Register here</a>
+                    </p>
+                </div>
             </div>
         </div>
     );
 }
 
 const styles = {
-    container: {
+    body: {
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        backgroundColor: '#F5F9FF',
+        minHeight: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#0B1120',
+        padding: '20px',
     },
-    card: {
-        backgroundColor: '#1A2540',
-        padding: '40px',
-        borderRadius: '12px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-        width: '360px',
+    container: {
+        maxWidth: '440px',
+        width: '100%',
     },
-    title: {
+    headerSection: {
         textAlign: 'center',
+        marginBottom: '32px',
+    },
+    brand: {
+        fontSize: '32px',
+        color: '#0B1120',
         marginBottom: '8px',
+        fontWeight: '700',
+    },
+    brandAccent: {
         color: '#00E5A0',
-        fontSize: '28px',
     },
     subtitle: {
-        textAlign: 'center',
         color: '#8A9BBE',
-        marginBottom: '24px',
         fontSize: '14px',
+        marginTop: '4px',
+    },
+    formCard: {
+        background: 'white',
+        padding: '40px',
+        borderRadius: '16px',
+        boxShadow: '0 4px 24px rgba(11, 17, 32, 0.08)',
+        border: '1px solid #F0F4FF',
+    },
+    formGroup: {
+        marginBottom: '20px',
+    },
+    label: {
+        display: 'block',
+        marginBottom: '10px',
+        fontWeight: '600',
+        color: '#0B1120',
+        fontSize: '14px',
+    },
+    required: {
+        color: '#FF6B6B',
+        marginLeft: '4px',
     },
     input: {
         width: '100%',
-        padding: '12px',
-        marginBottom: '16px',
-        borderRadius: '8px',
-        border: '1px solid #2A3A60',
-        backgroundColor: '#0B1120',
-        color: 'white',
+        padding: '14px 16px',
+        border: '1.5px solid #E8ECFF',
+        borderRadius: '10px',
         fontSize: '14px',
+        fontFamily: 'inherit',
+        backgroundColor: '#FAFBFF',
         boxSizing: 'border-box',
+        transition: 'all 0.3s ease',
     },
-    button: {
+    passwordContainer: {
+        position: 'relative',
         width: '100%',
-        padding: '12px',
-        backgroundColor: '#00E5A0',
-        color: '#0B1120',
-        border: 'none',
-        borderRadius: '8px',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        cursor: 'pointer',
     },
-    error: {
-        textAlign: 'center',
-        marginTop: '12px',
-        color: '#ff4444',
+    passwordInput: {
+        width: '100%',
+        padding: '14px 16px',
+        paddingRight: '48px',
+        border: '1.5px solid #E8ECFF',
+        borderRadius: '10px',
+        fontSize: '14px',
+        fontFamily: 'inherit',
+        backgroundColor: '#FAFBFF',
+        boxSizing: 'border-box',
+        transition: 'all 0.3s ease',
+    },
+    eyeButton: {
+        position: 'absolute',
+        right: '12px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        fontSize: '18px',
+        padding: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    submitBtn: {
+        width: '100%',
+        padding: '14px 20px',
+        background: 'linear-gradient(135deg, #00E5A0 0%, #00B87A 100%)',
+        color: 'white',
+        border: 'none',
+        borderRadius: '10px',
+        fontSize: '16px',
+        fontWeight: '700',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        marginTop: '8px',
+        boxShadow: '0 4px 12px rgba(0, 229, 160, 0.3)',
+    },
+    messageError: {
+        marginTop: '20px',
+        padding: '14px 18px',
+        borderRadius: '10px',
+        fontSize: '14px',
+        fontWeight: '500',
+        backgroundColor: '#FFE7E7',
+        color: '#FF6B6B',
+        borderLeft: '4px solid #FF6B6B',
     },
     link: {
         textAlign: 'center',
-        marginTop: '16px',
+        marginTop: '20px',
         fontSize: '14px',
         color: '#8A9BBE',
+    },
+    linkAnchor: {
+        color: '#00B87A',
+        fontWeight: '600',
+        textDecoration: 'none',
     },
 };
 
