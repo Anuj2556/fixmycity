@@ -6,13 +6,16 @@ import Register from './pages/register';
 import SubmitIssue from './pages/SubmitIssue';
 import IssueTracking from './pages/IssueTracking';
 import AdminDashboard from './pages/AdminDashboard';
+import { isAuthenticated, isAdmin } from './services/api';
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(typeof window !== 'undefined' ? localStorage.getItem('token') : null));
+    const [authenticated, setAuthenticated] = useState(() => isAuthenticated());
+    const [adminAccess, setAdminAccess] = useState(() => isAdmin());
 
     useEffect(() => {
         const syncAuthState = () => {
-            setIsAuthenticated(Boolean(localStorage.getItem('token')));
+            setAuthenticated(isAuthenticated());
+            setAdminAccess(isAdmin());
         };
 
         syncAuthState();
@@ -31,25 +34,25 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route
                     path="/login"
-                    element={isAuthenticated ? <Navigate to="/issues" replace /> : <Login />}
+                    element={authenticated ? <Navigate to={adminAccess ? '/admin' : '/issues'} replace /> : <Login />}
                 />
                 <Route
                     path="/register"
-                    element={isAuthenticated ? <Navigate to="/issues" replace /> : <Register />}
+                    element={authenticated ? <Navigate to={adminAccess ? '/admin' : '/issues'} replace /> : <Register />}
                 />
                 {/* backward-compatible alias: /dashboard -> /admin */}
                 <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
                 <Route
                     path="/submit-issue"
-                    element={isAuthenticated ? <SubmitIssue /> : <Navigate to="/login" replace />}
+                    element={authenticated ? <SubmitIssue /> : <Navigate to="/login" replace />}
                 />
                 <Route
                     path="/issues"
-                    element={isAuthenticated ? <IssueTracking /> : <Navigate to="/login" replace />}
+                    element={authenticated ? <IssueTracking /> : <Navigate to="/login" replace />}
                 />
                 <Route
                     path="/admin"
-                    element={isAuthenticated ? <AdminDashboard /> : <Navigate to="/login" replace />}
+                    element={authenticated && adminAccess ? <AdminDashboard /> : <Navigate to="/login" replace />}
                 />
             </Routes>
         </Router>

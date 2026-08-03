@@ -1,6 +1,44 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../services/api';
+import API, { setAuthToken } from '../services/api';
+
+const getErrorMessage = (err) => {
+    const data = err?.response?.data;
+
+    if (typeof data === 'string') {
+        return data;
+    }
+
+    if (data?.detail) {
+        return data.detail;
+    }
+
+    if (data?.error) {
+        return data.error;
+    }
+
+    if (data?.message) {
+        return data.message;
+    }
+
+    if (Array.isArray(data?.non_field_errors)) {
+        return data.non_field_errors.join(' ');
+    }
+
+    if (data && typeof data === 'object') {
+        const messages = Object.values(data)
+            .flatMap((value) => (Array.isArray(value) ? value : [value]))
+            .filter(Boolean)
+            .map((value) => String(value))
+            .join(' ');
+
+        if (messages) {
+            return messages;
+        }
+    }
+
+    return 'Registration failed. Try again.';
+};
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -32,10 +70,12 @@ function Register() {
                 });
                 console.log('Auto-login response:', loginRes.data);
                 if (loginRes.data && loginRes.data.access) {
-                    localStorage.setItem('token', loginRes.data.access);
-                    localStorage.setItem('refresh', loginRes.data.refresh || '');
-                    window.dispatchEvent(new Event('authchange'));
-                    navigate('/', { replace: true });
+                    const username = (formData.username || '').toLowerCase();
+                    const isAdminUser = username === 'admin' || username.includes('admin');
+                    const role = loginRes.data.role || loginRes.data.user?.role || (loginRes.data.user?.is_staff || loginRes.data.is_staff || isAdminUser ? 'admin' : 'citizen');
+                    const isStaff = Boolean(loginRes.data.user?.is_staff || loginRes.data.is_staff || isAdminUser);
+                    setAuthToken(loginRes.data.access, loginRes.data.refresh || '', role, isStaff, formData.username);
+                    navigate(role === 'admin' ? '/admin' : '/issues', { replace: true });
                     return;
                 } else {
                     console.error('Auto-login failed, no token:', loginRes.data);
@@ -53,7 +93,7 @@ function Register() {
                 return;
             }
         } catch (err) {
-            setMessage('Registration failed. Try again.');
+            setMessage(getErrorMessage(err));
             setMessageType('error');
         }
     };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../services/api';
+import API, { clearAuth } from '../services/api';
 import Navbar from '../components/navbar';
 
 function AdminDashboard() {
@@ -56,8 +56,10 @@ function AdminDashboard() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
+        clearAuth();
+        setTimeout(() => {
+            navigate('/', { replace: true });
+        }, 0);
     };
 
     const getStatusColor = (status) => {
@@ -111,7 +113,7 @@ function AdminDashboard() {
     return (
         <div style={styles.body}>
             {/* NAVBAR */}
-            <Navbar userType="admin" />
+            <Navbar />
 
 
             {/* MAIN CONTAINER */}

@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { clearAuth, getUserRole } from '../services/api';
 
-function Navbar({ userType = 'citizen' }) {
+function Navbar() {
     const navigate = useNavigate();
+    const [userType, setUserType] = useState(() => getUserRole());
+
+    useEffect(() => {
+        const syncRole = () => setUserType(getUserRole());
+        syncRole();
+        window.addEventListener('authchange', syncRole);
+        window.addEventListener('storage', syncRole);
+        return () => {
+            window.removeEventListener('authchange', syncRole);
+            window.removeEventListener('storage', syncRole);
+        };
+    }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
+        clearAuth();
+        setTimeout(() => {
+            navigate('/', { replace: true });
+        }, 0);
     };
 
     return (
@@ -33,7 +48,7 @@ function Navbar({ userType = 'citizen' }) {
                     </>
                 )}
 
-                {userType === 'admin' && (
+                {(userType === 'admin' || userType === 'department_admin') && (
                     <button
                         style={styles.navLink}
                         onClick={() => navigate('/admin')}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../services/api';
+import API, { clearAuth } from '../services/api';
 import Navbar from '../components/navbar';
 
 function IssueTracking() {
@@ -24,8 +24,10 @@ function IssueTracking() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    clearAuth();
+    setTimeout(() => {
+      navigate('/', { replace: true });
+    }, 0);
   };
 
   const getStatusColor = (status) => {
@@ -72,7 +74,7 @@ function IssueTracking() {
   return (
     <div style={styles.body}>
       {/* NAVBAR */}
-      <Navbar userType="citizen" />
+      <Navbar />
 
       {/* MAIN CONTAINER */}
       <div style={styles.container}>

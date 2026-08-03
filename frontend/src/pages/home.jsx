@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { clearAuth, isAuthenticated } from "../services/api";
 
 const styles = `
   :root {
@@ -804,21 +805,23 @@ const Logo = () => (
 
 const Nav = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem("token")));
+  const [isLoggedIn, setIsLoggedIn] = useState(() => isAuthenticated());
 
   useEffect(() => {
-    const syncAuthState = () => setIsLoggedIn(Boolean(localStorage.getItem("token")));
+    const syncAuthState = () => setIsLoggedIn(isAuthenticated());
     syncAuthState();
     window.addEventListener("storage", syncAuthState);
-    return () => window.removeEventListener("storage", syncAuthState);
+    window.addEventListener("authchange", syncAuthState);
+    return () => {
+      window.removeEventListener("storage", syncAuthState);
+      window.removeEventListener("authchange", syncAuthState);
+    };
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("refresh");
-    window.dispatchEvent(new Event("authchange"));
+    clearAuth();
     setIsLoggedIn(false);
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   return (

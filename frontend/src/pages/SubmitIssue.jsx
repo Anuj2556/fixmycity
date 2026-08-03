@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import API from '../services/api';
+import API, { clearAuth } from '../services/api';
 import GeocodingService from '../services/geocoding';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
@@ -195,8 +195,10 @@ function SubmitIssue() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    clearAuth();
+    setTimeout(() => {
+      navigate('/', { replace: true });
+    }, 0);
   };
 
   const categories = [
@@ -210,7 +212,7 @@ function SubmitIssue() {
   return (
     <div style={styles.body}>
       {/* NAVBAR */}
-      <Navbar userType="citizen" />
+      <Navbar />
 
 
       {/* MAIN CONTAINER */}
