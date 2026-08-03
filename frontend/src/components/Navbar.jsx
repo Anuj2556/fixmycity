@@ -12,7 +12,7 @@ function Navbar({ userType = 'citizen' }) {
     return (
         <div style={styles.navbar}>
             <div style={styles.brand}>
-                Fix<span style={styles.accent}>My</span>City
+                Fix<span style={styles.accent}>My</span>City — Ahmedabad
             </div>
 
             <div style={styles.navLinks}>

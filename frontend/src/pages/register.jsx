@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import API from '../services/api';
 
 function Register() {
@@ -7,6 +8,7 @@ function Register() {
         email: '',
         password: '',
     });
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
@@ -19,8 +21,37 @@ function Register() {
         e.preventDefault();
         try {
             const res = await API.post('/register/', formData);
-            setMessage(res.data.message);
+            setMessage(res.data.message || 'User created successfully');
             setMessageType('success');
+
+            // Auto-login so the user can access protected features immediately
+            try {
+                const loginRes = await API.post('/login/', {
+                    username: formData.username,
+                    password: formData.password,
+                });
+                console.log('Auto-login response:', loginRes.data);
+                if (loginRes.data && loginRes.data.access) {
+                    localStorage.setItem('token', loginRes.data.access);
+                    localStorage.setItem('refresh', loginRes.data.refresh || '');
+                    window.dispatchEvent(new Event('authchange'));
+                    navigate('/', { replace: true });
+                    return;
+                } else {
+                    console.error('Auto-login failed, no token:', loginRes.data);
+                    setMessage('Registration succeeded. Please login.');
+                    setMessageType('success');
+                    navigate('/login');
+                    return;
+                }
+                return;
+            } catch (loginErr) {
+                // If auto-login fails, fall back to asking user to login
+                setMessage('Registration succeeded. Please login.');
+                setMessageType('success');
+                navigate('/login');
+                return;
+            }
         } catch (err) {
             setMessage('Registration failed. Try again.');
             setMessageType('error');

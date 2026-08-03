@@ -19,10 +19,19 @@ function Login() {
         e.preventDefault();
         try {
             const res = await API.post('/login/', formData);
-            localStorage.setItem('token', res.data.access);
-            navigate('/dashboard');
+            console.log('Login response:', res.data);
+            if (res.data && res.data.access) {
+                localStorage.setItem('token', res.data.access);
+                localStorage.setItem('refresh', res.data.refresh || '');
+                window.dispatchEvent(new Event('authchange'));
+                navigate('/issues', { replace: true });
+            } else {
+                console.error('Login did not return access token', res.data);
+                setError('Login failed: no access token returned. Check server response in DevTools.');
+            }
         } catch (err) {
-            setError('Invalid username or password.');
+            console.error('Login error response:', err.response || err);
+            setError(err.response?.data?.detail || 'Invalid username or password.');
         }
     };
 

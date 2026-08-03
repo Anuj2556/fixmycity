@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const styles = `
   :root {
@@ -796,13 +797,29 @@ const Logo = () => (
       <MapPinIcon className="text-navy" />
     </span>
     <span className="logo-text">
-      Fix<span>My</span>City
+      Fix<span>My</span>City — Ahmedabad
     </span>
   </a>
 );
 
 const Nav = () => {
-  const [isLoggedIn] = useState(false); // Replace with your auth state
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem("token")));
+
+  useEffect(() => {
+    const syncAuthState = () => setIsLoggedIn(Boolean(localStorage.getItem("token")));
+    syncAuthState();
+    window.addEventListener("storage", syncAuthState);
+    return () => window.removeEventListener("storage", syncAuthState);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+    window.dispatchEvent(new Event("authchange"));
+    setIsLoggedIn(false);
+    navigate("/login", { replace: true });
+  };
 
   return (
     <header className="header">
@@ -815,10 +832,9 @@ const Nav = () => {
         <div className="auth-buttons">
           {isLoggedIn ? (
             <>
-              <span style={{ fontSize: "0.875rem", color: "var(--slate)", display: "none" }} className="sm-inline">
-                Hi, citizen
-              </span>
-              <a href="/logout" className="btn-outline">Logout</a>
+              <button type="button" className="btn-outline" onClick={() => navigate("/issues")}>My Issues</button>
+              <button type="button" className="btn-primary" onClick={() => navigate("/submit-issue")}>Report Issue</button>
+              <button type="button" className="btn-outline" onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
@@ -893,12 +909,12 @@ const Hero = () => (
           AI-powered civic reporting
         </span>
         <h1>
-          Fix Your City,
+          Fix Ahmedabad,
           <br />
           <span>Together.</span>
         </h1>
         <p>
-          Report local issues and help your community get them fixed. Snap a photo,
+          Report Ahmedabad issues and help your city get them fixed. Snap a photo,
           drop a pin, and let smart routing take it from there.
         </p>
         <div className="hero-buttons">
