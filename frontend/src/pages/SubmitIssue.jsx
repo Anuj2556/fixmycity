@@ -114,6 +114,13 @@ function SubmitIssue() {
         location.longitude
       );
       setLocationName(name);
+      if (name === 'Outside Ahmedabad') {
+        setMessage('❌ Please select a location within Ahmedabad.');
+        setMessageType('error');
+      } else {
+        setMessage('');
+        setMessageType('');
+      }
     } catch (error) {
       setMessage('❌ Could not get your location. Please allow location access.');
       setMessageType('error');
@@ -126,13 +133,31 @@ function SubmitIssue() {
     setFormData({ ...formData, latitude: lat, longitude: lng });
     const name = await GeocodingService.getLocationName(lat, lng);
     setLocationName(name);
+    if (name === 'Outside Ahmedabad') {
+      setMessage('❌ Please select a location within Ahmedabad.');
+      setMessageType('error');
+    } else {
+      setMessage('');
+      setMessageType('');
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
+    // Ensure selected location is within Ahmedabad
+    try {
+      const locCheck = await GeocodingService.getLocationName(formData.latitude, formData.longitude);
+      if (locCheck === 'Outside Ahmedabad') {
+        setMessage('❌ Please select a location within Ahmedabad before submitting.');
+        setMessageType('error');
+        setLoading(false);
+        return;
+      }
+    } catch (err) {
+      // ignore and proceed; backend will validate
+    }
     try {
       const submitData = new FormData();
       submitData.append('title', formData.title);
