@@ -1,0 +1,281 @@
+.body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F9FF 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 32px;
+  color: #0B1120;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #8A9BBE;
+  font-size: 14px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(11, 17, 32, 0.08);
+  border-left: 4px solid #2196F3;
+}
+
+.statCardBlue {
+  border-left-color: #2196F3;
+}
+
+.statCardOrange {
+  border-left-color: #FF9800;
+}
+
+.statCardGreen {
+  border-left-color: #00E5A0;
+}
+
+.statNumber {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0B1120;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #8A9BBE;
+  font-weight: 600;
+}
+
+.filterTabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filterTab {
+  padding: 10px 16px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 8px;
+  background-color: white;
+  color: #0B1120;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.filterTabActive {
+  background-color: #00E5A0;
+  border-color: #00E5A0;
+  color: white;
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
+  border: 1px solid #F0F4FF;
+  overflow: hidden;
+}
+
+.loadingMessage,
+.emptyMessage {
+  text-align: center;
+  padding: 40px;
+  color: #8A9BBE;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  background-color: #F0F4FF;
+  border-bottom: 2px solid #E8ECFF;
+}
+
+.tableRow {
+  border-bottom: 1px solid #F0F4FF;
+  transition: background-color 0.3s ease;
+}
+
+.tableCell {
+  padding: 16px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.issueInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.issueTitle {
+  font-weight: 600;
+  color: #0B1120;
+}
+
+.issueDesc {
+  font-size: 12px;
+  color: #8A9BBE;
+}
+
+.categoryBadge {
+  display: inline-block;
+  padding: 6px 10px;
+  background-color: #F0F4FF;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0B1120;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusPending {
+  background-color: #FF9800;
+}
+
+.statusInProgress {
+  background-color: #2196F3;
+}
+
+.statusResolved {
+  background-color: #00E5A0;
+}
+
+.statusDefault {
+  background-color: #8A9BBE;
+}
+
+.actionBtn {
+  padding: 6px 12px;
+  background-color: #00E5A0;
+  color: #0B1120;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 17, 32, 0.4);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: min(560px, calc(100% - 40px));
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(11, 17, 32, 0.15);
+  padding: 24px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modalBody {
+  display: grid;
+  gap: 18px;
+}
+
+.modalSection {
+  display: grid;
+  gap: 8px;
+}
+
+.modalLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0B1120;
+}
+
+.modalValue {
+  color: #4B5563;
+}
+
+.selectInput {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #E8ECFF;
+  background: #FAFBFF;
+  font-size: 14px;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cancelBtn {
+  padding: 12px 18px;
+  background: #F0F4FF;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.saveBtn {
+  padding: 12px 18px;
+  background: #00E5A0;
+  color: #0B1120;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
