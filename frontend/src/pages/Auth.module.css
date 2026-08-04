@@ -1,0 +1,156 @@
+.body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #F5F9FF;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 440px;
+  width: 100%;
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.brand {
+  font-size: 32px;
+  color: #0B1120;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.brandAccent {
+  color: #00E5A0;
+}
+
+.subtitle {
+  color: #8A9BBE;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.formCard {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
+  border: 1px solid #F0F4FF;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #0B1120;
+  font-size: 14px;
+}
+
+.required {
+  color: #FF6B6B;
+  margin-left: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #FAFBFF;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.passwordContainer {
+  position: relative;
+  width: 100%;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 14px 16px;
+  padding-right: 48px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #FAFBFF;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #00E5A0 0%, #00B87A 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3);
+}
+
+.messageError {
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #FFE7E7;
+  color: #FF6B6B;
+  border-left: 4px solid #FF6B6B;
+}
+
+.messageSuccess {
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #E7F9F4;
+  color: #00B87A;
+  border-left: 4px solid #00E5A0;
+}
+
+.link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #8A9BBE;
+}
+
+.linkAnchor {
+  color: #00B87A;
+  font-weight: 600;
+  text-decoration: none;
+}
