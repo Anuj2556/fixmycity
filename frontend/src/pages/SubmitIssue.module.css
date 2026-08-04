@@ -1,0 +1,255 @@
+.body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F9FF 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 32px;
+  color: #0B1120;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #8A9BBE;
+  font-size: 14px;
+}
+
+.formCard {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
+  border: 1px solid #F0F4FF;
+}
+
+.formGroup {
+  margin-bottom: 28px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #0B1120;
+  font-size: 14px;
+}
+
+.required {
+  color: #FF6B6B;
+  margin-left: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #FAFBFF;
+  transition: all 0.3s ease;
+}
+
+.textarea {
+  min-height: 110px;
+}
+
+.locationSearchContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.locationSearchInput {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #FAFBFF;
+  transition: all 0.3s ease;
+}
+
+.geolocateBtn {
+  padding: 14px 16px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  background-color: #F0F4FF;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.searchResultsDropdown {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(11, 17, 32, 0.1);
+  z-index: 1001;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.searchResultItem {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F0F4FF;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.searchResultItem:hover {
+  background-color: #F8FAFC;
+}
+
+.resultName {
+  font-weight: 600;
+  color: #0B1120;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.resultCoords {
+  color: #8A9BBE;
+  font-size: 12px;
+}
+
+.selectedLocation {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background-color: #E7F9F4;
+  border-radius: 8px;
+  color: #00B87A;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #00E5A0;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+.categoryOption {
+  padding: 16px;
+  border: 2px solid #E8ECFF;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.categoryOption:hover {
+  border-color: #00E5A0;
+}
+
+.categoryOptionSelected {
+  border-color: #00E5A0;
+  background-color: #E7F9F4;
+}
+
+.categoryEmoji {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.categoryLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0B1120;
+}
+
+.fileName {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background-color: #F0F4FF;
+  border-radius: 8px;
+  color: #00E5A0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.map {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  border: 2px dashed #D0D8F0;
+  margin-top: 12px;
+}
+
+.locationInfo {
+  margin-top: 12px;
+  padding: 10px;
+  background-color: #00E5A0;
+  color: #0B1120;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mapHint {
+  margin-top: 8px;
+  color: #8A9BBE;
+  font-size: 13px;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #00E5A0 0%, #00B87A 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 28px;
+  box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.messageSuccess {
+  background-color: #E7F9F4;
+  color: #00B87A;
+  border-left: 4px solid #00E5A0;
+}
+
+.messageError {
+  background-color: #FFE7E7;
+  color: #FF6B6B;
+  border-left: 4px solid #FF6B6B;
+}

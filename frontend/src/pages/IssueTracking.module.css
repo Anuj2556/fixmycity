@@ -1,0 +1,425 @@
+.body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F9FF 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 32px;
+  color: #0B1120;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #8A9BBE;
+  font-size: 14px;
+}
+
+.filterTabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filterTab {
+  padding: 10px 16px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 8px;
+  background-color: white;
+  color: #0B1120;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.filterTabActive {
+  background-color: #00E5A0;
+  border-color: #00E5A0;
+  color: white;
+}
+
+.issuesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loadingMessage {
+  text-align: center;
+  padding: 40px;
+  color: #8A9BBE;
+  font-size: 16px;
+}
+
+.emptyMessage {
+  text-align: center;
+  padding: 60px 40px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyButton {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00E5A0 0%, #00B87A 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.issueCard {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
+  border: 1px solid #F0F4FF;
+}
+
+.issueHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.issueTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.categoryEmoji {
+  font-size: 24px;
+}
+
+.statusBadge {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusPending {
+  background-color: #FF9800;
+}
+
+.statusInProgress {
+  background-color: #2196F3;
+}
+
+.statusResolved {
+  background-color: #00E5A0;
+}
+
+.statusDefault {
+  background-color: #8A9BBE;
+}
+
+.description {
+  color: #0B1120;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.issuePhoto {
+  width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+.metaInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background-color: #F0F4FF;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.metaItem {
+  font-size: 12px;
+}
+
+.metaLabel {
+  color: #8A9BBE;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.metaValue {
+  color: #0B1120;
+  font-weight: 500;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #E8ECFF;
+}
+
+.timelineStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.timelineStepActive {
+  opacity: 1;
+}
+
+.timelineCircle {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.timelineLabel {
+  font-size: 11px;
+  color: #8A9BBE;
+  font-weight: 600;
+  text-align: center;
+}
+
+.timelineConnector {
+  width: 40px;
+  height: 2px;
+  background-color: #E8ECFF;
+  flex: 1;
+}
+.body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F9FF 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.headerSection {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 32px;
+  color: #0B1120;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #8A9BBE;
+}
+
+.filterTabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.filterTab {
+  padding: 12px 18px;
+  border: 1.5px solid #E8ECFF;
+  border-radius: 10px;
+  background: white;
+  color: #0B1120;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.filterTab:hover {
+  border-color: #00E5A0;
+}
+
+.filterTabActive {
+  background-color: #00E5A0;
+  color: white;
+  border-color: #00E5A0;
+}
+
+.issuesList {
+  display: grid;
+  gap: 24px;
+}
+
+.loadingMessage,
+.emptyMessage {
+  text-align: center;
+  padding: 40px;
+  color: #8A9BBE;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyButton {
+  margin-top: 18px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00E5A0 0%, #33ecb4 100%);
+  color: #0B1120;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.issueCard {
+  background: white;
+  border: 1px solid rgba(11, 17, 32, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px -12px rgba(11, 17, 32, 0.12);
+  padding: 24px;
+}
+
+.issueHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.issueTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.categoryEmoji {
+  font-size: 24px;
+}
+
+.description {
+  margin-bottom: 16px;
+  color: #4B5563;
+  line-height: 1.7;
+}
+
+.issuePhoto {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+.metaInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metaItem {
+  display: flex;
+  gap: 8px;
+  color: #0B1120;
+  font-size: 13px;
+}
+
+.metaLabel {
+  font-weight: 700;
+}
+
+.metaValue {
+  color: #6B7280;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: white;
+  font-size: 12px;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.timelineStep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #F8FAFC;
+  color: #6B7280;
+}
+
+.timelineStepActive {
+  background: #E7F9F4;
+  color: #0B1120;
+}
+
+.timelineCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: white;
+  border: 1px solid #E5E7EB;
+}
+
+.timelineLabel {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.timelineConnector {
+  flex: 1;
+  min-width: 60px;
+  height: 2px;
+  background: #E5E7EB;
+}
