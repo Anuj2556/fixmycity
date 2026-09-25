@@ -2,10 +2,19 @@ from rest_framework import serializers
 from .models import Issue
 
 class IssueSerializer(serializers.ModelSerializer):
+    department_name = serializers.CharField(source='department.name', read_only=True)
+    department_code = serializers.CharField(source='department.code', read_only=True)
+    submitted_by_username = serializers.CharField(source='submitted_by.username', read_only=True)
+
     class Meta:
         model = Issue
         fields = '__all__'
         read_only_fields = ['submitted_by', 'created_at', 'updated_at']
+        extra_kwargs = {
+            'department': {'required': False, 'allow_null': True},
+            'category': {'required': False, 'allow_blank': True, 'default': 'other'},
+            'priority': {'required': False, 'default': 'medium'},
+        }
 
     def validate(self, data):
         # Ahmedabad bounding box (approximate)
@@ -22,4 +31,4 @@ class IssueSerializer(serializers.ModelSerializer):
         if not (min_lat <= float(lat) <= max_lat and min_lon <= float(lon) <= max_lon):
             raise serializers.ValidationError('Location must be within Ahmedabad city boundaries.')
 
-        return data
+        return data
