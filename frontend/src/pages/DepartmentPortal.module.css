@@ -1,0 +1,583 @@
+/* ─── Department Operations Portal ─── */
+
+.body {
+  min-height: 100vh;
+  background: transparent;
+  color: var(--text-primary);
+  padding-bottom: 80px;
+  transition: color var(--transition-smooth);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.headerSection {
+  margin-bottom: 32px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-active);
+  border: 1px solid rgba(0, 229, 160, 0.3);
+  color: var(--brand-primary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  transition: color var(--transition-smooth);
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 760px;
+  line-height: 1.6;
+  transition: color var(--transition-smooth);
+}
+
+/* Global Stats Banner */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.statCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
+}
+
+.statValue {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Department Grid Hub */
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deptGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.deptCard {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.deptCard:hover {
+  border-color: var(--brand-primary);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.deptCardActive {
+  border-color: var(--brand-primary) !important;
+  background: var(--bg-card-hover) !important;
+  box-shadow: 0 0 24px var(--brand-glow);
+}
+
+.deptHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.deptIcon {
+  font-size: 32px;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deptName {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.deptCode {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.deptDesc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 18px;
+  flex-grow: 1;
+}
+
+.deptContact {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.deptOfficer {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.metricsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  text-align: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-card);
+}
+
+.metricItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.metricNum {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.metricName {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.criticalAlert {
+  color: var(--danger) !important;
+}
+
+/* Console View */
+.consoleContainer {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-xl);
+  padding: 30px;
+  box-shadow: var(--shadow-lg);
+}
+
+.consoleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-card);
+}
+
+.consoleTitleArea {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.consoleTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* Filters & Search */
+.filterBar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.filterGroup {
+  display: flex;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  border: 1px solid var(--border-color);
+}
+
+.filterBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+  color: var(--text-primary);
+}
+
+.filterBtnActive {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover)) !important;
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+.searchBox {
+  flex-grow: 1;
+  min-width: 200px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  transition: all var(--transition-fast);
+}
+
+.searchBox:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+/* Issue Cards List */
+.issuesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.issueCard {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.issueCard:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(0, 229, 160, 0.3);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.issueCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.issueTitle {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.badgeRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Priority Badges */
+.badgePriorityCritical {
+  background: var(--priority-critical-bg);
+  border: 1px solid var(--priority-critical-border);
+  color: var(--priority-critical);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.badgePriorityHigh {
+  background: var(--priority-high-bg);
+  border: 1px solid var(--priority-high-border);
+  color: var(--priority-high);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgePriorityMedium {
+  background: var(--priority-medium-bg);
+  border: 1px solid var(--priority-medium-border);
+  color: var(--priority-medium);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgePriorityLow {
+  background: var(--priority-low-bg);
+  border: 1px solid var(--priority-low-border);
+  color: var(--priority-low);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Status Badges */
+.badgeStatusPending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgeStatusInProgress {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgeStatusResolved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.issueDesc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* AI Intelligence Box */
+.aiBox {
+  background: rgba(99, 102, 241, 0.1);
+  border-left: 3px solid #6366f1;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deptNotesBox {
+  background: var(--bg-card-solid);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border: 1px dashed var(--border-color);
+}
+
+.deptNotesTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* Action Controls */
+.actionFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-card);
+}
+
+.actionMeta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.actionBtns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btnInProgress {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #3b82f6;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnInProgress:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.btnResolve {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnResolve:hover {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+.btnNote {
+  background: var(--bg-card-solid);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnNote:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border-color: var(--brand-primary);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.emptyIcon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}

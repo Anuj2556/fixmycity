@@ -1,72 +1,101 @@
+/* ─── Submit Issue Page ─── */
+
 .body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #FFFFFF 0%, #F5F9FF 100%);
   min-height: 100vh;
-  padding: 20px;
+  padding: 0 0 40px;
+  background: transparent;
 }
 
 .container {
-  max-width: 700px;
+  max-width: 720px;
   margin: 0 auto;
+  padding: 0 20px;
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .headerSection {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+  padding-top: 16px;
 }
 
 .title {
   font-size: 32px;
-  color: #0B1120;
+  color: var(--text-primary);
   margin-bottom: 8px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  transition: color var(--transition-smooth);
 }
 
 .subtitle {
-  color: #8A9BBE;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+  transition: color var(--transition-smooth);
 }
 
 .formCard {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(11, 17, 32, 0.08);
-  border: 1px solid #F0F4FF;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: 36px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-card);
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
 .formGroup {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .label {
   display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #0B1120;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--text-primary);
   font-size: 14px;
+  letter-spacing: -0.01em;
 }
 
 .required {
-  color: #FF6B6B;
-  margin-left: 4px;
+  color: var(--priority-critical, #ef4444);
+  margin-left: 2px;
 }
 
 .input {
   width: 100%;
-  padding: 14px 16px;
-  border: 1.5px solid #E8ECFF;
-  border-radius: 10px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-family: inherit;
-  background-color: #FAFBFF;
-  transition: all 0.3s ease;
+  background: var(--bg-input);
+  transition: all var(--transition-fast);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  background: var(--bg-card-solid);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
 }
 
 .textarea {
-  min-height: 110px;
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
 }
 
+/* ─── Location Search ─── */
 .locationSearchContainer {
   display: flex;
   gap: 8px;
@@ -76,180 +105,362 @@
 
 .locationSearchInput {
   flex: 1;
-  padding: 14px 16px;
-  border: 1.5px solid #E8ECFF;
-  border-radius: 10px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-family: inherit;
-  background-color: #FAFBFF;
-  transition: all 0.3s ease;
+  background: var(--bg-input);
+  transition: all var(--transition-fast);
+  color: var(--text-primary);
+}
+
+.locationSearchInput::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.locationSearchInput:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  background: var(--bg-card-solid);
+  box-shadow: 0 0 0 3px var(--brand-glow);
 }
 
 .geolocateBtn {
-  padding: 14px 16px;
-  border: 1.5px solid #E8ECFF;
-  border-radius: 10px;
-  background-color: #F0F4FF;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 18px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
   font-weight: bold;
+}
+
+.geolocateBtn:hover {
+  border-color: var(--brand-primary);
+  background: var(--bg-active);
+  transform: scale(1.05);
+}
+
+.geolocateBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .searchResultsDropdown {
   position: absolute;
-  top: 50px;
+  top: 54px;
   left: 0;
-  right: 0;
-  background-color: white;
-  border: 1.5px solid #E8ECFF;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(11, 17, 32, 0.1);
+  right: 60px;
+  background: var(--bg-card-solid);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
   z-index: 1001;
-  max-height: 300px;
+  max-height: 280px;
   overflow-y: auto;
 }
 
 .searchResultItem {
   padding: 12px 16px;
-  border-bottom: 1px solid #F0F4FF;
+  border-bottom: 1px solid var(--border-card);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.searchResultItem:last-child {
+  border-bottom: none;
 }
 
 .searchResultItem:hover {
-  background-color: #F8FAFC;
+  background: var(--bg-active);
 }
 
 .resultName {
-  font-weight: 600;
-  color: #0B1120;
+  font-weight: 700;
+  color: var(--text-primary);
   font-size: 14px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .resultCoords {
-  color: #8A9BBE;
+  color: var(--text-secondary);
   font-size: 12px;
 }
 
 .selectedLocation {
   margin-top: 12px;
   padding: 12px 16px;
-  background-color: #E7F9F4;
-  border-radius: 8px;
-  color: #00B87A;
-  font-size: 13px;
-  font-weight: 600;
-  border: 1px solid #00E5A0;
+  background: var(--brand-surface);
+  border-radius: var(--radius-md);
+  color: var(--brand-primary);
+  font-size: 13.5px;
+  font-weight: 700;
+  border: 1px solid var(--brand-border);
 }
 
+/* ─── Category Grid ─── */
 .categoryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 12px;
 }
 
 .categoryOption {
-  padding: 16px;
-  border: 2px solid #E8ECFF;
-  border-radius: 10px;
+  padding: 18px 12px;
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--radius-lg);
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: white;
+  transition: all var(--transition-fast);
+  background: var(--bg-card-solid);
+  position: relative;
+  overflow: hidden;
 }
 
 .categoryOption:hover {
-  border-color: #00E5A0;
+  border-color: var(--brand-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--brand-glow);
+  background: var(--bg-card-hover);
 }
 
 .categoryOptionSelected {
-  border-color: #00E5A0;
-  background-color: #E7F9F4;
+  border-color: var(--brand-primary) !important;
+  background: var(--brand-surface) !important;
+  box-shadow: 0 0 0 2px var(--brand-glow);
+}
+
+.categoryOptionSelected .categoryLabel {
+  color: var(--brand-primary) !important;
+  font-weight: 800;
 }
 
 .categoryEmoji {
-  font-size: 28px;
+  font-size: 30px;
   margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .categoryLabel {
-  font-size: 12px;
-  font-weight: 600;
-  color: #0B1120;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+  transition: color var(--transition-fast);
 }
 
 .fileName {
   margin-top: 10px;
   padding: 10px 14px;
-  background-color: #F0F4FF;
-  border-radius: 8px;
-  color: #00E5A0;
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-md);
+  color: var(--brand-primary);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
+/* ─── Map ─── */
 .map {
   width: 100%;
-  height: 300px;
-  border-radius: 12px;
-  border: 2px dashed #D0D8F0;
+  height: 320px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
   margin-top: 12px;
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.map:hover {
+  border-color: var(--brand-primary);
 }
 
 .locationInfo {
   margin-top: 12px;
-  padding: 10px;
-  background-color: #00E5A0;
-  color: #0B1120;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 12px 16px;
+  background: var(--brand-surface);
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .mapHint {
   margin-top: 8px;
-  color: #8A9BBE;
+  color: var(--text-secondary);
   font-size: 13px;
+  font-style: italic;
 }
 
+/* ─── Submit Button ─── */
 .submitBtn {
   width: 100%;
-  padding: 14px 20px;
-  background: linear-gradient(135deg, #00E5A0 0%, #00B87A 100%);
-  color: white;
+  padding: 15px 20px;
+  background: var(--brand-gradient);
+  color: #ffffff !important;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
   margin-top: 28px;
-  box-shadow: 0 4px 12px rgba(0, 229, 160, 0.3);
+  box-shadow: 0 4px 14px var(--brand-glow);
+  letter-spacing: -0.01em;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--brand-glow);
 }
 
 .submitBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
+/* ─── Messages ─── */
 .message {
   margin-top: 24px;
   padding: 16px 20px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  animation: fadeInUp 0.3s ease;
 }
 
 .messageSuccess {
-  background-color: #E7F9F4;
-  color: #00B87A;
-  border-left: 4px solid #00E5A0;
+  background: var(--brand-surface);
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-border);
 }
 
 .messageError {
-  background-color: #FFE7E7;
-  color: #FF6B6B;
-  border-left: 4px solid #FF6B6B;
+  background: var(--priority-critical-bg);
+  color: var(--priority-critical);
+  border: 1px solid var(--priority-critical-border);
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  .formCard {
+    padding: 24px;
+  }
+
+  .categoryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ─── AI Intelligence Live Preview Card ─── */
+.aiCard {
+  background: var(--bg-card);
+  border: 1.5px solid rgba(99, 102, 241, 0.4);
+  border-radius: var(--radius-xl);
+  padding: 20px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.12);
+  transition: all var(--transition-smooth);
+}
+
+.aiHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.aiTitle {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #818cf8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aiBadge {
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.aiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.aiStat {
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+}
+
+.aiStatLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.aiStatValue {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+.aiReasoning {
+  font-size: 13.5px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  background: var(--bg-subtle);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-top: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.aiActionBtn {
+  background: #6366f1;
+  color: #ffffff !important;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all var(--transition-fast);
+}
+
+.aiActionBtn:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
 }

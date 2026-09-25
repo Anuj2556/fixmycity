@@ -1,22 +1,28 @@
 import React from 'react';
 import styles from '../../pages/Home.module.css';
+import { ArrowRightIcon } from './icons';
 
 export default function CTASection() {
   return (
     <section className={styles.ctaSection}>
       <div className={`${styles.container} ${styles.ctaContent}`}>
-        <span className={styles.badge}>
-          Join thousands of active citizens
-        </span>
-        <h2 className={styles.sectionTitle} style={{ marginTop: '20px', fontSize: '2rem' }}>
-          Ready to make a difference?
+        <div className={styles.badge}>
+          <span>Join thousands of proactive citizens</span>
+        </div>
+        <h2 className={styles.ctaHeadline}>
+          Help Build a Cleaner, Safer Ahmedabad.
         </h2>
-        <p className={styles.sectionSubtitle} style={{ maxWidth: '576px', margin: '16px auto 0' }}>
-          It takes 30 seconds to file your first report. Your city will notice.
+        <p className={styles.ctaSubtitle}>
+          Whether it is an open pothole on SG Highway, a water main leak in Maninagar, or an unlit street corner, your report triggers immediate action.
         </p>
         <div className={styles.ctaButtons}>
-          <a href="/submit-issue" className={styles.btnPrimary}>Report Issue</a>
-          <a href="/admin" className={styles.btnOutline}>View Dashboard</a>
+          <a href="/submit-issue" className={styles.btnPrimary}>
+            <span>File a Report Now</span>
+            <ArrowRightIcon />
+          </a>
+          <a href="/issues" className={styles.btnOutline}>
+            <span>Browse Civic Feed</span>
+          </a>
         </div>
       </div>
     </section>

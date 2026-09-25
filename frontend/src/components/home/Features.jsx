@@ -1,48 +1,68 @@
 import React from 'react';
 import styles from '../../pages/Home.module.css';
+import {
+  SparklesIcon,
+  LayersIcon,
+  MapPinIcon,
+  SearchIcon,
+  BuildingOfficeIcon,
+  CivicShieldIcon
+} from '../common/Icons';
 
 export default function Features() {
   const features = [
-    { icon: 'bot', title: 'AI Auto-Categorization', desc: 'Reports are classified and routed to the right department automatically.' },
-    { icon: 'activity', title: 'Real-time Status Tracking', desc: 'See every state change as departments pick up and resolve issues.' },
-    { icon: 'map', title: 'Interactive Map Pinning', desc: 'Drop a precise pin on the map so crews find the spot with zero guesswork.' },
-    { icon: 'search', title: 'Secure Location Search', desc: 'Fast, privacy-first location search backed by verified geodata.' },
-    { icon: 'building', title: 'Department Management', desc: 'Admins organize teams, assign roles, and monitor workload at a glance.' },
-    { icon: 'eye', title: 'Public Dashboard', desc: 'Full transparency — every citizen can watch progress across the city.' },
+    {
+      icon: <SparklesIcon size={22} />,
+      title: 'Multimodal AI Classification',
+      desc: 'MobileNetV2 vision and text NLP analyze photos and descriptions together to classify defect types and determine hazard urgency.',
+    },
+    {
+      icon: <LayersIcon size={22} />,
+      title: 'Automated AMC Department Routing',
+      desc: 'Work tickets bypass manual bureaucratic delays, landing instantly in the queue of Roads, Water, Power, Sanitation, or Health.',
+    },
+    {
+      icon: <MapPinIcon size={22} />,
+      title: 'Strict Ahmedabad Geofencing',
+      desc: 'Boundary checking (22.95°N to 23.12°N) ensures all complaints map directly to verified AMC municipal ward coordinates.',
+    },
+    {
+      icon: <BuildingOfficeIcon size={22} />,
+      title: 'Dedicated Department Consoles',
+      desc: 'Municipal officers access specialized operational hubs to inspect queues, dispatch road crews, and update live work notes.',
+    },
+    {
+      icon: <SearchIcon size={22} />,
+      title: 'Real-Time Civic Transparency',
+      desc: 'Every citizen can search, filter, and track complaint lifecycles from submission to physical resolution.',
+    },
+    {
+      icon: <CivicShieldIcon size={22} />,
+      title: 'Emergency Priority Triage',
+      desc: 'Electrocution hazards, water main bursts, and sinkholes trigger critical alerts with explainable AI reasoning.',
+    },
   ];
-
-  const renderIcon = (name) => {
-    switch (name) {
-      case 'bot':
-        return <span className={styles.featureIcon}>🤖</span>;
-      case 'activity':
-        return <span className={styles.featureIcon}>⚡</span>;
-      case 'map':
-        return <span className={styles.featureIcon}>📍</span>;
-      case 'search':
-        return <span className={styles.featureIcon}>🔎</span>;
-      case 'building':
-        return <span className={styles.featureIcon}>🏢</span>;
-      case 'eye':
-        return <span className={styles.featureIcon}>👁️</span>;
-      default:
-        return <span className={styles.featureIcon}>✨</span>;
-    }
-  };
 
   return (
     <section id="features" className={styles.featuresSection}>
       <div className={styles.container}>
         <div className={styles.featuresHeader}>
-          <h2 className={styles.sectionTitle}>Everything a modern city needs</h2>
-          <p className={styles.sectionSubtitle}>Built for citizens, tuned for departments, transparent by default.</p>
+          <div className={styles.badge}>
+            <span>Core Capabilities</span>
+          </div>
+          <h2 className={styles.sectionTitle}>Engineered for Civic Speed & Precision</h2>
+          <p className={styles.sectionSubtitle}>
+            Transforming municipal grievance handling from weeks of paperwork into an automated, real-time civic operations engine.
+          </p>
         </div>
         <div className={styles.featuresGrid}>
           {features.map((feature) => (
             <div key={feature.title} className={`${styles.card} ${styles.featureCard}`}>
-              {renderIcon(feature.icon)}
-              <h3>{feature.title}</h3>
-              <p>{feature.desc}</p>
+              <div className={styles.featureIconWell}>
+                {feature.icon}
+              </div>
+              <h3 className={styles.featureTitle}>{feature.title}</h3>
+              <p className={styles.featureDesc}>{feature.desc}</p>
             </div>
           ))}
         </div>
