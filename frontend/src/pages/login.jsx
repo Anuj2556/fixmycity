@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API, { setAuthToken } from '../services/api';
+import API, { setAuthToken, fetchDepartments } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
-import { CivicShieldIcon, SunIcon, MoonIcon } from '../components/common/Icons';
+import {
+    CivicShieldIcon,
+    SunIcon,
+    MoonIcon,
+    UserIcon,
+    BuildingOfficeIcon,
+    AdminBadgeIcon,
+} from '../components/common/Icons';
 import styles from './Auth.module.css';
 
 const getErrorMessage = (err) => {
@@ -14,8 +21,20 @@ const getErrorMessage = (err) => {
     return 'Invalid username or password.';
 };
 
+// Standard demo officer username map by department code
+const DEPT_OFFICER_MAP = {
+    roads: 'officer_roads',
+    water: 'officer_water',
+    electricity: 'officer_electricity',
+    sanitation: 'officer_sanitation',
+    health_safety: 'officer_health',
+};
+
 function Login() {
     const { theme, toggleTheme } = useTheme();
+    const [selectedRole, setSelectedRole] = useState('citizen'); // 'citizen' | 'department_admin' | 'admin'
+    const [departments, setDepartments] = useState([]);
+    const [selectedDeptId, setSelectedDeptId] = useState('');
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -25,11 +44,55 @@ function Login() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // Load available departments on mount
+    useEffect(() => {
+        const loadDeptList = async () => {
+            try {
+                const data = await fetchDepartments();
+                if (Array.isArray(data) && data.length > 0) {
+                    setDepartments(data);
+                    setSelectedDeptId(String(data[0].id));
+                }
+            } catch (err) {
+                console.error('Failed to load departments in login:', err);
+            }
+        };
+        loadDeptList();
+    }, []);
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleQuickLogin = (uname, pwd, fallbackPwd) => {
+    const handleRoleChange = (role) => {
+        setSelectedRole(role);
+        setError('');
+        if (role === 'citizen') {
+            setFormData({ username: 'citizen1', password: 'password123' });
+        } else if (role === 'admin') {
+            setFormData({ username: 'adminuser', password: 'adminpass123' });
+        } else if (role === 'department_admin') {
+            const currentDept = departments.find((d) => String(d.id) === String(selectedDeptId)) || departments[0];
+            const deptCode = currentDept?.code || 'roads';
+            const defaultOfficer = DEPT_OFFICER_MAP[deptCode] || 'officer_roads';
+            setFormData({ username: defaultOfficer, password: 'officerpass123' });
+        }
+    };
+
+    const handleDepartmentSelect = (deptId) => {
+        setSelectedDeptId(String(deptId));
+        const dept = departments.find((d) => String(d.id) === String(deptId));
+        if (dept) {
+            const officerUname = DEPT_OFFICER_MAP[dept.code] || `officer_${dept.code}`;
+            setFormData({
+                username: officerUname,
+                password: 'officerpass123',
+            });
+        }
+    };
+
+    const handleQuickLogin = (uname, pwd, fallbackPwd, targetRole = 'citizen') => {
+        setSelectedRole(targetRole);
         setFormData({ username: uname, password: pwd });
         executeLogin(uname, pwd, fallbackPwd);
     };
@@ -87,6 +150,8 @@ function Login() {
         executeLogin(formData.username, formData.password);
     };
 
+    const activeDept = departments.find((d) => String(d.id) === String(selectedDeptId));
+
     return (
         <div className={styles.body}>
             <div className={styles.authTopBar}>
@@ -118,47 +183,148 @@ function Login() {
                 </div>
 
                 <div className={styles.formCard}>
-                    {/* Quick Demo Logins for Testing */}
-                    <div className={styles.demoSection}>
-                        <div className={styles.demoLabel}>
-                            <span>Instant Access Logins</span>
-                            <span className={styles.demoBadge}>AMC VERIFIED</span>
+                    {/* Role Switcher Tabs */}
+                    <div className={styles.roleSelectorThree}>
+                        <div
+                            className={`${styles.roleOption} ${selectedRole === 'citizen' ? styles.roleOptionSelected : ''}`}
+                            onClick={() => handleRoleChange('citizen')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            <div className={styles.roleEmoji}><UserIcon size={18} /></div>
+                            <div className={styles.roleText}>Citizen</div>
                         </div>
-                        <div className={styles.demoButtons}>
-                            <button
-                                type="button"
-                                className={styles.demoBtn}
-                                onClick={() => handleQuickLogin('citizen1', 'password123', 'citizenpass123')}
-                            >
-                                Citizen
-                            </button>
-                            <button
-                                type="button"
-                                className={styles.demoBtn}
-                                onClick={() => handleQuickLogin('officer_roads', 'officerpass123', 'password123')}
-                            >
-                                Roads Dept
-                            </button>
-                            <button
-                                type="button"
-                                className={styles.demoBtn}
-                                onClick={() => handleQuickLogin('adminuser', 'adminpass123', 'password123')}
-                            >
-                                City Admin
-                            </button>
+
+                        <div
+                            className={`${styles.roleOption} ${selectedRole === 'department_admin' ? styles.roleOptionSelected : ''}`}
+                            onClick={() => handleRoleChange('department_admin')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            <div className={styles.roleEmoji}><BuildingOfficeIcon size={18} /></div>
+                            <div className={styles.roleText}>Officer</div>
+                        </div>
+
+                        <div
+                            className={`${styles.roleOption} ${selectedRole === 'admin' ? styles.roleOptionSelected : ''}`}
+                            onClick={() => handleRoleChange('admin')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            <div className={styles.roleEmoji}><AdminBadgeIcon size={18} /></div>
+                            <div className={styles.roleText}>Admin</div>
                         </div>
                     </div>
+
+                    {/* Instant Access Logins for Testing */}
+                    <div className={styles.demoSection}>
+                        <div className={styles.demoLabel}>
+                            <span>
+                                {selectedRole === 'department_admin'
+                                    ? 'Select Municipal Department Queue'
+                                    : 'Instant Access Logins'}
+                            </span>
+                            <span className={styles.demoBadge}>AMC VERIFIED</span>
+                        </div>
+
+                        {selectedRole === 'department_admin' ? (
+                            <div className={styles.deptButtonsGrid}>
+                                {departments.map((dept) => {
+                                    const officerUser = DEPT_OFFICER_MAP[dept.code] || `officer_${dept.code}`;
+                                    const isSelected = String(dept.id) === String(selectedDeptId);
+                                    return (
+                                        <button
+                                            key={dept.id}
+                                            type="button"
+                                            className={`${styles.deptQuickBtn} ${isSelected ? styles.deptQuickBtnActive : ''}`}
+                                            onClick={() => {
+                                                handleDepartmentSelect(dept.id);
+                                                handleQuickLogin(officerUser, 'officerpass123', 'password123', 'department_admin');
+                                            }}
+                                            title={`Login as ${dept.name} officer`}
+                                        >
+                                            <span>{dept.icon || '🏢'}</span>
+                                            <span>{dept.code.toUpperCase()}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className={styles.demoButtons}>
+                                <button
+                                    type="button"
+                                    className={styles.demoBtn}
+                                    onClick={() => handleQuickLogin('citizen1', 'password123', 'citizenpass123', 'citizen')}
+                                >
+                                    Citizen
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.demoBtn}
+                                    onClick={() => handleQuickLogin('officer_roads', 'officerpass123', 'password123', 'department_admin')}
+                                >
+                                    Roads Officer
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.demoBtn}
+                                    onClick={() => handleQuickLogin('adminuser', 'adminpass123', 'password123', 'admin')}
+                                >
+                                    City Admin
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Department Officer Selector & Detail Card */}
+                    {selectedRole === 'department_admin' && (
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>
+                                Municipal Department <span className={styles.required}>*</span>
+                            </label>
+                            <select
+                                className={styles.select}
+                                value={selectedDeptId}
+                                onChange={(e) => handleDepartmentSelect(e.target.value)}
+                            >
+                                {departments.map((d) => (
+                                    <option key={d.id} value={d.id}>
+                                        {d.icon || '🏢'} {d.name} ({d.code})
+                                    </option>
+                                ))}
+                            </select>
+
+                            {activeDept && (
+                                <div className={styles.deptInfoCard} style={{ marginTop: '8px' }}>
+                                    <div className={styles.deptInfoCardHeader}>
+                                        <span>{activeDept.icon || '🏢'}</span>
+                                        <span>{activeDept.name}</span>
+                                    </div>
+                                    <div className={styles.deptInfoCardMeta}>
+                                        Lead: <strong>{activeDept.head_officer || 'Chief Municipal Officer'}</strong>
+                                        <br />
+                                        Hotline: {activeDept.phone} • Email: {activeDept.email}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit}>
                         <div className={styles.formGroup}>
                             <label className={styles.label}>
-                                Username <span className={styles.required}>*</span>
+                                {selectedRole === 'department_admin' ? 'Officer Username' : 'Username'}{' '}
+                                <span className={styles.required}>*</span>
                             </label>
                             <input
                                 className={styles.input}
                                 type="text"
                                 name="username"
-                                placeholder="Enter your username"
+                                placeholder={
+                                    selectedRole === 'department_admin'
+                                        ? 'e.g. officer_roads, officer_water'
+                                        : 'Enter your username'
+                                }
                                 value={formData.username}
                                 onChange={handleChange}
                                 required
@@ -191,7 +357,13 @@ function Login() {
                         </div>
 
                         <button className={styles.submitBtn} type="submit" disabled={loading}>
-                            {loading ? 'Authenticating...' : 'Sign In to Portal'}
+                            {loading
+                                ? 'Authenticating...'
+                                : selectedRole === 'department_admin'
+                                ? 'Sign In as Department Officer'
+                                : selectedRole === 'admin'
+                                ? 'Sign In as City Administrator'
+                                : 'Sign In to Citizen Portal'}
                         </button>
                     </form>
 
@@ -202,7 +374,11 @@ function Login() {
                     )}
 
                     <p className={styles.link}>
-                        New to FixMyCity Ahmedabad? <a href="/register" className={styles.linkAnchor}>Create account</a>
+                        {selectedRole === 'department_admin' ? (
+                            <>Need an officer account? <a href="/register" className={styles.linkAnchor}>Register Department Officer</a></>
+                        ) : (
+                            <>New to FixMyCity Ahmedabad? <a href="/register" className={styles.linkAnchor}>Create account</a></>
+                        )}
                     </p>
                 </div>
             </div>

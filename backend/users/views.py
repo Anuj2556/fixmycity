@@ -15,6 +15,9 @@ DEMO_CREDENTIALS = {
     'citizen1': {'password123', 'citizenpass123'},
     'officer_roads': {'officerpass123', 'password123'},
     'officer_water': {'officerpass123', 'password123'},
+    'officer_electricity': {'officerpass123', 'password123'},
+    'officer_sanitation': {'officerpass123', 'password123'},
+    'officer_health': {'officerpass123', 'password123'},
     'adminuser': {'adminpass123', 'password123'},
     'anuj': {'password123', 'adminpass123'},
 }

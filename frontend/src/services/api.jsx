@@ -123,9 +123,23 @@ export const updateUserProfile = async (data) => {
 };
 
 // Department endpoints
-export const fetchDepartmentsOverview = async () => {
-    const res = await API.get('/departments/overview/');
+export const fetchDepartments = async () => {
+    const res = await API.get('/departments/');
     return res.data;
+};
+
+export const fetchDepartmentsOverview = async () => {
+    try {
+        const res = await API.get('/departments/overview/');
+        return res.data;
+    } catch (err) {
+        // Fallback to basic department list if overview endpoint is restricted
+        if (err.response?.status === 401 || err.response?.status === 403) {
+            const fallbackRes = await API.get('/departments/');
+            return fallbackRes.data;
+        }
+        throw err;
+    }
 };
 
 export const fetchDepartmentStats = async (departmentId) => {

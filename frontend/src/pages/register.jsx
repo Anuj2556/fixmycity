@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API, { setAuthToken, fetchDepartmentsOverview } from '../services/api';
+import API, { setAuthToken, fetchDepartments } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import { CivicShieldIcon, SunIcon, MoonIcon, UserIcon, BuildingOfficeIcon } from '../components/common/Icons';
 import styles from './Auth.module.css';
@@ -34,7 +34,7 @@ function Register() {
     useEffect(() => {
         const loadDepartments = async () => {
             try {
-                const data = await fetchDepartmentsOverview();
+                const data = await fetchDepartments();
                 setDepartments(data);
                 if (data.length > 0) {
                     setFormData((prev) => ({ ...prev, department: data[0].id }));
@@ -143,7 +143,9 @@ function Register() {
                     <div className={styles.logoBadge}>
                         <CivicShieldIcon size={24} />
                     </div>
-                    <h1 className={styles.brand}>Create Citizen Account</h1>
+                    <h1 className={styles.brand}>
+                        {formData.role === 'department_admin' ? 'Register Officer' : 'Create Citizen Account'}
+                    </h1>
                     <p className={styles.subtitle}>Ahmedabad Municipal Civic Intelligence Platform</p>
                 </div>
 
@@ -176,7 +178,7 @@ function Register() {
                                 className={styles.input}
                                 type="text"
                                 name="username"
-                                placeholder="Choose a username"
+                                placeholder={formData.role === 'department_admin' ? 'e.g. officer_username' : 'Choose a username'}
                                 value={formData.username}
                                 onChange={handleChange}
                                 required
@@ -224,10 +226,28 @@ function Register() {
                                 >
                                     {departments.map((d) => (
                                         <option key={d.id} value={d.id}>
-                                            {d.name} ({d.code})
+                                            {d.icon || '🏢'} {d.name} ({d.code})
                                         </option>
                                     ))}
                                 </select>
+
+                                {(() => {
+                                    const activeD = departments.find((d) => String(d.id) === String(formData.department));
+                                    if (!activeD) return null;
+                                    return (
+                                        <div className={styles.deptInfoCard} style={{ marginTop: '8px' }}>
+                                            <div className={styles.deptInfoCardHeader}>
+                                                <span>{activeD.icon || '🏢'}</span>
+                                                <span>{activeD.name}</span>
+                                            </div>
+                                            <div className={styles.deptInfoCardMeta}>
+                                                AMC Code: <strong>{activeD.code}</strong> • Head: {activeD.head_officer || 'Chief Municipal Officer'}
+                                                <br />
+                                                Hotline: {activeD.phone} • Email: {activeD.email}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
                         )}
 
