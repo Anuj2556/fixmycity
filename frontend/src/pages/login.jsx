@@ -12,19 +12,32 @@ import {
 } from '../components/common/Icons';
 import styles from './Auth.module.css';
 
+const cleanMessage = (text) => {
+    if (!text || typeof text !== 'string') return '';
+    const lower = text.toLowerCase();
+    if (lower.includes('mongo') || lower.includes('database') || lower.includes('bson') || lower.includes('buffering') || lower.includes('econnrefused')) {
+        return 'We are experiencing a temporary service delay. Please try again shortly.';
+    }
+    if (lower.includes('e11000') || lower.includes('duplicate key')) {
+        return 'This account is already registered. Please sign in instead.';
+    }
+    return text;
+};
+
 const getErrorMessage = (err) => {
     if (!err.response) {
-        return 'Server is spinning up (Render free tier) or temporarily unreachable. Please wait 15–30 seconds and try again.';
+        return 'Unable to reach the server. Please check your internet connection or wait a moment while the service starts up.';
     }
     const { status, data } = err.response;
-    if (typeof data === 'string') return data;
-    if (data?.detail) return data.detail;
-    if (data?.error) return data.error;
-    if (data?.message) return data.message;
-    if (status === 401) return 'Invalid username or password. Please check your credentials.';
-    if (status === 500) return 'Database or server error. Please ensure MongoDB Atlas allows connection from anywhere (0.0.0.0/0).';
-    if (status === 502 || status === 503 || status === 504) return 'Backend is waking up on Render. Please retry in 15 seconds.';
-    return 'Authentication failed. Please check your network and try again.';
+    const raw = typeof data === 'string' ? data : (data?.detail || data?.error || data?.message);
+    const cleaned = cleanMessage(raw);
+    if (cleaned) return cleaned;
+
+    if (status === 401) return 'Incorrect username or password. Please double-check your credentials and try again.';
+    if (status === 400) return 'Please ensure all required fields are entered correctly.';
+    if (status === 502 || status === 503 || status === 504) return 'The civic portal is momentarily starting up. Please give it a few seconds and try again.';
+    if (status === 500) return 'Our servers are currently experiencing high traffic. Please try again in a few moments.';
+    return 'Something went wrong while signing in. Please try again.';
 };
 
 

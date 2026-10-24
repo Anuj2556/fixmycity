@@ -48,7 +48,7 @@ const register = async (req, res) => {
   } catch (error) {
     console.error('Register error:', error);
     return res.status(500).json({
-      detail: `Registration failed: ${error.message || 'Database connection error'}.`,
+      detail: 'Our civic database is momentarily unavailable. Please try again in a moment.',
       error: error.message,
     });
   }
@@ -114,7 +114,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({
-      detail: `Authentication failed: ${error.message || 'Database connection error'}.`,
+      detail: 'Our civic database is momentarily unavailable. Please try again in a moment.',
       error: error.message,
     });
   }
