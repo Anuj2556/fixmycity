@@ -76,8 +76,8 @@ async function seed() {
     }
 
     // 2. Initial Administrative Accounts (for deployment bootstrap)
-    const adminPassword = process.env.INITIAL_ADMIN_PASSWORD || 'Admin@FixMyCity2026!';
-    const officerPassword = process.env.INITIAL_OFFICER_PASSWORD || 'Officer@Ahmedabad2026!';
+    const adminPassword = process.env.INITIAL_ADMIN_PASSWORD ;
+    const officerPassword = process.env.INITIAL_OFFICER_PASSWORD ;
 
     const initialUsers = [
       {
@@ -131,13 +131,17 @@ async function seed() {
       },
     ];
 
-    for (const userData of initialUsers) {
-      const exists = await User.findOne({ username: userData.username });
-      if (!exists) {
-        await User.create(userData);
-        console.log(`  + User created: ${userData.username} (${userData.role})`);
-      } else {
-        console.log(`  = User already exists: ${userData.username}`);
+    if (!adminPassword || !officerPassword) {
+      console.log('ℹ️ [Seed] INITIAL_ADMIN_PASSWORD or INITIAL_OFFICER_PASSWORD not set in environment. Skipping administrative user seeding.');
+    } else {
+      for (const userData of initialUsers) {
+        const exists = await User.findOne({ username: userData.username });
+        if (!exists) {
+          await User.create(userData);
+          console.log(`  + User created: ${userData.username} (${userData.role})`);
+        } else {
+          console.log(`  = User already exists: ${userData.username}`);
+        }
       }
     }
 

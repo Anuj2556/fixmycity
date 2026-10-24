@@ -5,31 +5,15 @@ import { useTheme } from '../context/ThemeContext';
 import { CivicShieldIcon, SunIcon, MoonIcon, UserIcon, BuildingOfficeIcon } from '../components/common/Icons';
 import styles from './Auth.module.css';
 
-const cleanMessage = (text) => {
-    if (!text || typeof text !== 'string') return '';
-    const lower = text.toLowerCase();
-    if (lower.includes('mongo') || lower.includes('database') || lower.includes('bson') || lower.includes('buffering') || lower.includes('econnrefused')) {
-        return 'We are experiencing a temporary service delay. Please try again shortly.';
-    }
-    if (lower.includes('e11000') || lower.includes('duplicate key') || lower.includes('already exists') || lower.includes('already registered')) {
-        return 'This username is already taken. Please choose another username or sign in.';
-    }
-    return text;
-};
-
 const getErrorMessage = (err) => {
     if (!err.response) {
-        return 'Unable to reach the server. Please check your internet connection or wait a moment while the service starts up.';
+        return 'Service is temporarily unreachable. Please check your connection and try again.';
     }
     const { status, data } = err.response;
-    const raw = typeof data === 'string' ? data : (data?.detail || data?.error || data?.message);
-    const cleaned = cleanMessage(raw);
-    if (cleaned) return cleaned;
-
-    if (status === 400) return 'Please check that all required fields are filled out correctly.';
-    if (status === 502 || status === 503 || status === 504) return 'The civic portal is momentarily starting up. Please give it a few seconds and try again.';
-    if (status === 500) return 'Our servers are currently experiencing high traffic. Please try again in a few moments.';
-    return 'We were unable to create your account. Please try again.';
+    if (status === 400) {
+        return typeof data?.detail === 'string' ? data.detail : 'Unable to complete registration with the provided details. Please try again.';
+    }
+    return 'Unable to complete registration at this moment. Please try again shortly.';
 };
 
 function Register() {

@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const Department = require('../models/Department');
 const Issue = require('../models/Issue');
@@ -7,18 +8,18 @@ const register = async (req, res) => {
   try {
     const { username, password, email, role = 'citizen', phone = '', address = '', department } = req.body;
 
-    if (!username || !username.trim()) {
-      return res.status(400).json({ detail: 'Username is required.' });
-    }
-
-    if (!password || password.length < 6) {
-      return res.status(400).json({ detail: 'Password must be at least 6 characters long.' });
+    if (!username || !username.trim() || !password || password.length < 6) {
+      return res.status(400).json({
+        detail: 'Please provide a valid username and a password with at least 6 characters.',
+      });
     }
 
     const cleanUsername = username.trim().toLowerCase();
     const existingUser = await User.findOne({ username: cleanUsername });
     if (existingUser) {
-      return res.status(400).json({ detail: `Username "${username}" is already registered. Please sign in or use a different username.` });
+      return res.status(400).json({
+        detail: 'Unable to register with the provided information. Please choose different credentials.',
+      });
     }
 
     let deptId = null;
@@ -44,12 +45,11 @@ const register = async (req, res) => {
 
     await user.save();
 
-    return res.status(201).json({ message: 'User registered successfully' });
+    return res.status(201).json({ message: 'Account created successfully.' });
   } catch (error) {
-    console.error('Register error:', error);
+    console.error('Register error:', error.message);
     return res.status(500).json({
-      detail: 'Our civic database is momentarily unavailable. Please try again in a moment.',
-      error: error.message,
+      detail: 'Unable to complete your request at this time. Please try again later.',
     });
   }
 };
@@ -58,29 +58,24 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !username.trim()) {
-      return res.status(400).json({ detail: 'Please enter your username.' });
-    }
-
-    if (!password) {
-      return res.status(400).json({ detail: 'Please enter your password.' });
-    }
-
-    const lowerUsername = username.trim().toLowerCase();
-
-    // Fast lookup without unnecessary population overhead
-    const user = await User.findOne({ username: lowerUsername });
-
-    if (!user) {
-      return res.status(401).json({
-        detail: `No account found for username "${username}". Please check for typos or create an account.`,
+    if (!username || !password) {
+      return res.status(400).json({
+        detail: 'Invalid credentials. Please enter your username and password.',
       });
     }
 
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
+    const lowerUsername = username.trim().toLowerCase();
+    const user = await User.findOne({ username: lowerUsername });
+
+    // Use dummy comparison to balance response timing and prevent user enumeration
+    const DUMMY_HASH = '$2a$08$123456789012345678901.abcdefghijklmnopqrstuvwxyz12';
+    const isMatch = user
+      ? await user.comparePassword(password)
+      : await bcrypt.compare(password, DUMMY_HASH);
+
+    if (!user || !isMatch) {
       return res.status(401).json({
-        detail: 'Incorrect password entered. Please check your password and try again.',
+        detail: 'Invalid username or password. Please check your credentials and try again.',
       });
     }
 
@@ -112,10 +107,9 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login error:', error.message);
     return res.status(500).json({
-      detail: 'Our civic database is momentarily unavailable. Please try again in a moment.',
-      error: error.message,
+      detail: 'Unable to sign in at this time. Please try again later.',
     });
   }
 };
