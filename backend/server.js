@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const axios = require('axios');
 const connectDB = require('./src/config/db');
 
 // Import Routers
@@ -56,6 +57,19 @@ app.get('/api', (req, res) => {
       '/api/issues/ai-analyze/',
     ],
   });
+});
+
+// Outbound IP Diagnostic (to easily find Render IP for MongoDB Atlas whitelist)
+app.get('/api/my-ip', async (req, res) => {
+  try {
+    const ipRes = await axios.get('https://api.ipify.org?format=json', { timeout: 4000 });
+    res.json({
+      outbound_ip: ipRes.data.ip,
+      instruction: 'Add this IP to MongoDB Atlas Network Access to allow Render backend only.',
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not detect outbound IP', detail: err.message });
+  }
 });
 
 // API Routes
