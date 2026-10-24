@@ -221,6 +221,6 @@ fixmycity/
 
 ---
 
-## 📄 License
+## 📄 VISIT
 
-This project is licensed under the MIT License. Developed for civic modernization in Ahmedabad, India.
+https://fixmycity-frontend-lfgq.onrender.com
