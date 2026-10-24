@@ -21,14 +21,7 @@ const getErrorMessage = (err) => {
     return 'Invalid username or password.';
 };
 
-// Standard demo officer username map by department code
-const DEPT_OFFICER_MAP = {
-    roads: 'officer_roads',
-    water: 'officer_water',
-    electricity: 'officer_electricity',
-    sanitation: 'officer_sanitation',
-    health_safety: 'officer_health',
-};
+
 
 function Login() {
     const { theme, toggleTheme } = useTheme();
@@ -67,37 +60,16 @@ function Login() {
     const handleRoleChange = (role) => {
         setSelectedRole(role);
         setError('');
-        if (role === 'citizen') {
-            setFormData({ username: 'citizen1', password: 'password123' });
-        } else if (role === 'admin') {
-            setFormData({ username: 'adminuser', password: 'adminpass123' });
-        } else if (role === 'department_admin') {
-            const currentDept = departments.find((d) => String(d.id) === String(selectedDeptId)) || departments[0];
-            const deptCode = currentDept?.code || 'roads';
-            const defaultOfficer = DEPT_OFFICER_MAP[deptCode] || 'officer_roads';
-            setFormData({ username: defaultOfficer, password: 'officerpass123' });
-        }
+        setFormData({ username: '', password: '' });
     };
 
     const handleDepartmentSelect = (deptId) => {
         setSelectedDeptId(String(deptId));
-        const dept = departments.find((d) => String(d.id) === String(deptId));
-        if (dept) {
-            const officerUname = DEPT_OFFICER_MAP[dept.code] || `officer_${dept.code}`;
-            setFormData({
-                username: officerUname,
-                password: 'officerpass123',
-            });
-        }
     };
 
-    const handleQuickLogin = (uname, pwd, fallbackPwd, targetRole = 'citizen') => {
-        setSelectedRole(targetRole);
-        setFormData({ username: uname, password: pwd });
-        executeLogin(uname, pwd, fallbackPwd);
-    };
 
-    const executeLogin = async (uname, pwd, fallbackPwd) => {
+
+    const executeLogin = async (uname, pwd) => {
         setLoading(true);
         setError('');
         try {
@@ -105,10 +77,7 @@ function Login() {
             try {
                 res = await API.post('/login/', { username: uname, password: pwd });
             } catch (initialErr) {
-                if (fallbackPwd && initialErr?.response?.status === 401) {
-                    setFormData({ username: uname, password: fallbackPwd });
-                    res = await API.post('/login/', { username: uname, password: fallbackPwd });
-                } else {
+                {
                     throw initialErr;
                 }
             }
@@ -216,65 +185,7 @@ function Login() {
                         </div>
                     </div>
 
-                    {/* Instant Access Logins for Testing */}
-                    <div className={styles.demoSection}>
-                        <div className={styles.demoLabel}>
-                            <span>
-                                {selectedRole === 'department_admin'
-                                    ? 'Select Municipal Department Queue'
-                                    : 'Instant Access Logins'}
-                            </span>
-                            <span className={styles.demoBadge}>AMC VERIFIED</span>
-                        </div>
 
-                        {selectedRole === 'department_admin' ? (
-                            <div className={styles.deptButtonsGrid}>
-                                {departments.map((dept) => {
-                                    const officerUser = DEPT_OFFICER_MAP[dept.code] || `officer_${dept.code}`;
-                                    const isSelected = String(dept.id) === String(selectedDeptId);
-                                    return (
-                                        <button
-                                            key={dept.id}
-                                            type="button"
-                                            className={`${styles.deptQuickBtn} ${isSelected ? styles.deptQuickBtnActive : ''}`}
-                                            onClick={() => {
-                                                handleDepartmentSelect(dept.id);
-                                                handleQuickLogin(officerUser, 'officerpass123', 'password123', 'department_admin');
-                                            }}
-                                            title={`Login as ${dept.name} officer`}
-                                        >
-                                            <span>{dept.icon || '🏢'}</span>
-                                            <span>{dept.code.toUpperCase()}</span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        ) : (
-                            <div className={styles.demoButtons}>
-                                <button
-                                    type="button"
-                                    className={styles.demoBtn}
-                                    onClick={() => handleQuickLogin('citizen1', 'password123', 'citizenpass123', 'citizen')}
-                                >
-                                    Citizen
-                                </button>
-                                <button
-                                    type="button"
-                                    className={styles.demoBtn}
-                                    onClick={() => handleQuickLogin('officer_roads', 'officerpass123', 'password123', 'department_admin')}
-                                >
-                                    Roads Officer
-                                </button>
-                                <button
-                                    type="button"
-                                    className={styles.demoBtn}
-                                    onClick={() => handleQuickLogin('adminuser', 'adminpass123', 'password123', 'admin')}
-                                >
-                                    City Admin
-                                </button>
-                            </div>
-                        )}
-                    </div>
 
                     {/* Department Officer Selector & Detail Card */}
                     {selectedRole === 'department_admin' && (

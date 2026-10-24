@@ -1,182 +1,222 @@
-# FixMyCity — Ahmedabad Civic Intelligence Platform
+# 🏙️ FixMyCity — Ahmedabad Civic Intelligence Platform
 
-**FixMyCity** is an AI-powered civic issue reporting and municipal dispatch platform tailored specifically for the city of **Ahmedabad, Gujarat, India**.
+[![Node.js](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MongoDB Atlas](https://img.shields.io/badge/Database-MongoDB%20Atlas-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/atlas)
+[![React](https://img.shields.io/badge/Frontend-React%2019%20%7C%20Vite-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Python AI](https://img.shields.io/badge/AI%20Microservice-Flask%20%7C%20TensorFlow-FF6F00?logo=tensorflow&logoColor=white)](https://flask.palletsprojects.com/)
+[![Zod](https://img.shields.io/badge/Validation-Zod-3E67B1?logo=zod&logoColor=white)](https://zod.dev/)
 
-It features automated multi-modal defect classification, intelligent topic mismatch detection, physical visual ground-truth severity assessment, least-privilege role-based access control (RBAC), and strict geographic boundary enforcement.
+**FixMyCity** is an end-to-end municipal issue reporting and dispatch management platform designed specifically for **Ahmedabad, Gujarat, India**.
+
+It unites citizens and municipal engineers through automated multi-modal defect classification, intelligent topic mismatch detection, physical visual ground-truth severity assessment, role-based access control (RBAC), and strict geospatial boundary enforcement.
 
 ---
 
 ## 🏛️ System Architecture
 
-The application consists of three decoupled services running concurrently:
+```mermaid
+flowchart TB
+    subgraph Client Tier
+        FE[React 19 + Vite Frontend\n:5173]
+        Map[Leaflet + Nominatim Ahmedabad Geocoder]
+    end
 
-```
-┌─────────────────────────────────────────────────────────┐
-│              React + Vite Frontend (Port 5173)          │
-│          Modern Glassmorphism UI & Ahmedabad Maps        │
-└───────────────┬─────────────────────────┬───────────────┘
-                │                         │
-                ▼                         ▼
-┌───────────────────────────────┐  ┌───────────────────────────────────┐
-│     Django REST Backend       │  │    Flask AI Microservice (5000)   │
-│         (Port 8000)           │◄─┤   MobileNetV2 + Scikit-Learn NLP  │
-│ RBAC, ORM, SQLite, Auth, REST │  │  Multi-modal Civic Classification │
-└───────────────────────────────┘  └───────────────────────────────────┘
+    subgraph Core Backend Services
+        NodeAPI[Node.js + Express API Server\n:8000]
+        MongoDB[(MongoDB Atlas Cluster\n2dsphere Geospatial Index)]
+        Zod[Zod Validation Schemas]
+        Auth[JWT & Bcrypt Security Layer]
+        Media[Multer / Local Media Storage]
+    end
+
+    subgraph AI Intelligence Service
+        FlaskAI[Flask AI Classifier Microservice\n:5000]
+        MobileNet[MobileNetV2 Vision Classifier]
+        NLP[TF-IDF + Naive Bayes Hinglish NLP]
+    end
+
+    FE -->|HTTP / JWT Auth| NodeAPI
+    FE -->|Location Search & Pin| Map
+    FE -->|Live AI Analysis Request| NodeAPI
+    NodeAPI -->|Forward Payload| FlaskAI
+    NodeAPI --> Zod
+    NodeAPI --> Auth
+    NodeAPI --> MongoDB
+    NodeAPI --> Media
+    FlaskAI --> MobileNet
+    FlaskAI --> NLP
 ```
 
-1. **Frontend (`/frontend`)**: React 18, Vite, Lucide Icons, Leaflet / Nominatim Ahmedabad Geocoding.
-2. **Backend (`/backend`)**: Django 4.2 REST Framework with JWT authentication, role-based query scoping, and data validation.
-3. **AI Microservice (`/ai_service`)**: Flask, TensorFlow (MobileNetV2), Scikit-Learn NLP, and computer vision defect cavity measurement.
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies & Tools |
+| :--- | :--- |
+| **Frontend** | React 19, Vite, React Router v7, Leaflet, Axios, Vanilla CSS Modules (Glassmorphism design tokens) |
+| **Backend API** | Node.js, Express.js, JWT (`jsonwebtoken`), Password Hashing (`bcryptjs`), Multer file uploads |
+| **Database** | MongoDB Atlas via Mongoose with `2dsphere` geospatial indexing |
+| **Validation** | Zod schemas for credentials, issue reporting, and Ahmedabad bounding box coordinates |
+| **AI Microservice** | Python 3.9+, Flask, TensorFlow (MobileNetV2 ImageNet), Scikit-Learn (TF-IDF & Naive Bayes) |
 
 ---
 
 ## ⚙️ Prerequisites
 
-Before running the project, ensure you have installed:
-- **Python 3.9+** (recommended: Python 3.9 – 3.11)
-- **Node.js 18+** and **npm**
-- **Git**
-- *(Optional)* Free **MongoDB Atlas** account for cloud document storage & geospatial indexing
+Before running the project locally, ensure you have installed:
+- **Node.js 18+** & **npm**
+- **Python 3.9 – 3.11**
+- **MongoDB Atlas** account (free cluster configured in `backend/.env`)
+
+> [!IMPORTANT]
+> **MongoDB Atlas Network Access (IP Whitelist)**:
+> In your [MongoDB Atlas Dashboard](https://cloud.mongodb.com/) under **Security → Network Access**, add your current IP address (or click **Allow Access from Anywhere** `0.0.0.0/0` for development).
 
 ---
 
-## 🚀 How to Run Locally (Step-by-Step)
+## 🚀 Quickstart Guide (Step-by-Step)
 
-Follow these steps in order to set up and run the entire platform.
+### Step 1: Install Dependencies
 
-### Step 0: Initial Environment Setup & Dependencies (First Time Only)
-
-Open your terminal in the `fixmycity` root folder:
-
+#### 1. Backend (Node.js)
 ```bash
-# 1. Activate the Python virtual environment
-# Windows (PowerShell / Command Prompt):
-.venv\Scripts\activate
-# macOS / Linux:
-source .venv/bin/activate
+cd backend
+npm install
+cd ..
+```
 
-# 2. Install AI Microservice & Backend dependencies
-pip install -r ai_service/requirements.txt
-pip install -r backend/requirements.txt pymongo dnspython python-dotenv
-
-# 3. Install Frontend npm dependencies
+#### 2. Frontend (React + Vite)
+```bash
 cd frontend
 npm install
 cd ..
 ```
 
+#### 3. AI Service (Python)
+```bash
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
+pip install -r ai_service/requirements.txt
+```
+
 ---
 
-### Step 1: Database Setup & MongoDB Atlas Sync
+### Step 2: Seed the Database
 
-The platform uses Django ORM for relational authentication with automatic real-time synchronization to **MongoDB Atlas** for civic issues:
+Seed municipal departments, demo users, and sample Ahmedabad issues into MongoDB Atlas:
 
+```bash
+cd backend
+npm run seed
+cd ..
+```
+
+---
+
+### Step 3: Start the Application (3 Terminals)
+
+#### 🟢 Terminal 1: AI Intelligence Microservice (`:5000`)
 ```bash
 # Activate virtual environment
 .venv\Scripts\activate
 
-# Navigate to backend directory
-cd backend
-
-# 1. Apply Django database migrations
-python manage.py migrate
-
-# 2. Seed Ahmedabad municipal departments and demo accounts
-python manage.py seed_ahmedabad
-
-# 3. Synchronize issues and departments to MongoDB Atlas
-python manage.py sync_to_mongodb
-```
-> *(The MongoDB connection is configured via `backend/.env`. A `2dsphere` geospatial index is automatically created on `issues.location`).*
-
----
-
-### Step 2: Start the 3 Services (Open 3 Separate Terminals)
-
-To run the complete platform, start the three services concurrently:
-
-#### 🟢 Terminal 1: AI Intelligence Microservice (Port 5000)
-```bash
-cd fixmycity
-.venv\Scripts\activate
+# Run Flask AI service
 python ai_service/app.py
 ```
-* **Status:** `http://127.0.0.1:5000/health`
-* Handles MobileNetV2 defect cavity calculation, multi-modal topic mismatch detection, and Hinglish NLP.
+* **Status**: `http://127.0.0.1:5000/health`
 
-#### 🔵 Terminal 2: Django REST Backend (Port 8000)
+#### 🔵 Terminal 2: Node.js Express Backend (`:8000`)
 ```bash
-cd fixmycity/backend
-.venv\Scripts\activate
-python manage.py runserver 127.0.0.1:8000
-```
-* **Status:** `http://127.0.0.1:8000/api/departments/`
-* **Admin Portal:** `http://127.0.0.1:8000/admin/`
-* Handles JWT auth, role queries, Ahmedabad geofencing, and real-time MongoDB mirroring.
-
-#### 🟣 Terminal 3: React + Vite Frontend (Port 5173)
-```bash
-cd fixmycity/frontend
+cd backend
 npm run dev
 ```
-* **Access App:** **`http://localhost:5173`**
+* **Status**: `http://127.0.0.1:8000/api`
+
+#### 🟣 Terminal 3: React 19 Frontend (`:5173`)
+```bash
+cd frontend
+npm run dev
+```
+* **App URL**: `http://localhost:5173`
 
 ---
 
-### Step 3: Open in Browser & Login
-Visit **`http://localhost:5173`** in your browser. On the login page (`/login`), you can use the **1-Click Instant Access** buttons or log in manually with the credentials below.
+## 👥 Default Demo Accounts & Roles
 
----
-
-## 👥 Default Demo Credentials & Roles
-
-The system strictly enforces **Least-Privilege Role-Based Access Control (RBAC)**:
+The platform strictly enforces **Least-Privilege Role-Based Access Control (RBAC)**:
 
 | Role | Username | Password | Access Privileges |
 | :--- | :--- | :--- | :--- |
-| **City Administrator** | `anuj` or `adminuser` | `password123` | Full municipal oversight, cross-department analytics, global issue assignment, department management. |
-| **Roads Officer** | `officer_roads` | `password123` | Restricted strictly to the **Roads & Infrastructure Department** queue and status updates. |
-| **Water Officer** | `officer_water` | `password123` | Restricted strictly to the **Water Supply & Sewerage Board** queue and status updates. |
-| **Citizen** | `citizen1` | `password123` | Can submit issues, track own submitted reports, and edit personal profile. Cannot access internal officer portals. |
+| **City Administrator** | `adminuser` | `adminpass123` | Full municipal oversight, cross-department analytics, global issue assignment. |
+| **Roads Officer** | `officer_roads` | `officerpass123` | Restricted strictly to the **Roads & Infrastructure Department** queue and status updates. |
+| **Water Officer** | `officer_water` | `officerpass123` | Restricted strictly to the **Water Supply & Sewerage Board** queue and status updates. |
+| **Electricity Officer** | `officer_electricity` | `officerpass123` | Restricted strictly to the **Street Lighting & Power Department** queue. |
+| **Sanitation Officer** | `officer_sanitation` | `officerpass123` | Restricted strictly to the **Solid Waste Management** queue. |
+| **Citizen** | `citizen1` | `citizenpass123` | Can submit issues, track own submitted reports, and edit personal profile. |
 
-*(You can also register a brand new citizen account directly from the `/register` page).*
+*(New citizen accounts can also be created freely via the `/register` page).*
 
 ---
 
-## 🧠 Key Intelligence & Safety Features
+## 🧠 Core Intelligence & Governance Features
 
 ### 1. Cross-Field & Cross-Modal Topic Mismatch Protection
-- **Cross-Field Conflict**: If a user enters a title about one department (e.g., *"pipe leakage"* $\rightarrow$ Water) and a description about another (e.g., *"big road broken"* $\rightarrow$ Roads), the AI detects the contradiction, sets the category to `NONE`, and flags `is_mismatch = True`.
-- **Cross-Modal Conflict**: If the uploaded photo shows roadway damage but the text describes a burst water pipe or hanging electrical wires, the report is flagged as mismatched.
-- **Enforcement**: Submissions with detected topic mismatches are blocked on the frontend and rejected by the backend with `HTTP 400 Bad Request`.
+- **Contradiction Detection**: If a citizen enters a title describing road potholes but a description about a burst water pipeline, the AI engine detects the conflicting topics, flags `is_mismatch: true`, and prompts the user to align their report details.
+- **Strict Server Rejection**: The backend blocks mismatched or contradictory complaints with `400 Bad Request` before they enter municipal queues.
 
-### 2. Computer Vision Ground-Truth Severity Override
-- Instead of relying solely on exaggerated citizen descriptions (e.g. *"huge crater dangerous emergency"*), the AI measures the physical cavity area of the road surface using computer vision luminance thresholds.
-- If physical evidence shows a **small surface cavity** ($< 4.5\%$ defect coverage), the system automatically **downgrades priority to `LOW`** routine maintenance, logging the ground-truth rationale.
+### 2. Multi-Modal Vision & NLP Triage
+- Combines **MobileNetV2** visual defect recognition (60% weight) with **TF-IDF + Naive Bayes** text analysis (40% weight) to recommend the exact responsible municipal department and prioritize urgent safety hazards (e.g., exposed high-voltage cables, major pipeline ruptures).
 
-### 3. Gibberish & Meaningless Input Rejection
-- Blocks keyboard sequence mashing (e.g. `asdfghjk`, `qwertyuiop`), repeated characters (`aaaa`), and non-civic input strings from polluting municipal queues.
+### 3. Ahmedabad Geofencing
+- Coordinate boundaries are strictly validated on both client and server to remain within the Ahmedabad metropolitan area:
+  - **Latitude**: `22.95°N – 23.12°N`
+  - **Longitude**: `72.45°E – 72.66°E`
+- Submissions outside these boundaries are rejected by the Zod validation middleware.
 
-### 4. Ahmedabad Geofencing & Bounding Box
-- **Client & Server Defense-in-Depth**: Geocoding search and GPS location pins are validated to fall strictly within the Ahmedabad metropolitan bounding box ($22.95^\circ\text{N} - 23.12^\circ\text{N}, 72.45^\circ\text{E} - 72.66^\circ\text{E}$). Reports outside the city boundary are rejected.
+### 4. Anti-Gibberish & Input Hygiene
+- Rejects keyboard spam (e.g., `asdfghjk`, `123456`), repeated identical characters (`aaaa`), and nonsensical phrases to prevent database pollution.
 
 ---
 
-## 🧪 Running Automated Verification Tests
+## 📂 Project Directory Structure
 
-To verify all worst-case scenarios, fallback handlers, and least-privilege security rules:
-
-```bash
-# Activate virtualenv
-.venv\Scripts\activate
-
-# 1. Run worst-case topic mismatch and visual ground truth tests:
-python scratch/test_worst_cases.py
-
-# 2. Run backend rejection and validation tests:
-python scratch/test_django_rejection.py
-
-# 3. Run gibberish, role isolation, and department queue tests:
-python scratch/test_unrecognized_and_gibberish.py
 ```
-*(All test suites are configured to run end-to-end against local services).*
+fixmycity/
+├── ai_service/               # Python Flask AI Classification Microservice
+│   ├── app.py                # MobileNetV2 vision model & NLP inference
+│   ├── models/               # Pretrained weights and vectorizers
+│   ├── requirements.txt      # Python dependencies
+│   └── .env                  # AI service environment variables
+├── backend/                  # Node.js + Express + MongoDB REST API
+│   ├── server.js             # Express application entrypoint (:8000)
+│   ├── src/
+│   │   ├── config/           # MongoDB Atlas connection (db.js)
+│   │   ├── controllers/      # Auth, Department, and Issue controllers
+│   │   ├── middleware/       # JWT auth, Multer upload, and Zod validation
+│   │   ├── models/           # Mongoose schemas (User, Department, Issue)
+│   │   ├── routes/           # Express API routers
+│   │   ├── schemas/          # Zod validation schemas
+│   │   ├── seed/             # Database seed script (seedData.js)
+│   │   └── services/         # Python AI microservice bridge & keyword fallback
+│   ├── media/issues/         # Uploaded citizen issue photos
+│   ├── package.json          # NPM dependencies & scripts
+│   └── .env                  # MongoDB Atlas URI & JWT secrets
+└── frontend/                 # React 19 + Vite Web Application
+    ├── src/
+    │   ├── components/       # Shared UI components (Navbar, Hero, StatCard, etc.)
+    │   ├── pages/            # Home, SubmitIssue, IssueTracking, AdminDashboard, Portals
+    │   ├── services/         # Axios API client (`api.jsx`) & geocoding helper
+    │   ├── App.jsx           # App routing & authentication synchronization
+    │   └── index.css         # Glassmorphism design tokens & global typography
+    ├── index.html            # Application entry HTML
+    └── vite.config.js        # Vite development server configuration
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. Developed for civic modernization in Ahmedabad, India.

@@ -12,11 +12,27 @@ env/
 .env
 
 # Node
+node_modules/
 frontend/node_modules/
+backend/node_modules/
 frontend/dist/
 
 # Vite
 frontend/.vite/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage/
+scratch/
+
+# Reports & Documentation Artifacts
+*.docx
+*.pdf
+report_images/
+reports/
+scratch/
 
 # VS Code
 .vscode/

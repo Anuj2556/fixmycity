@@ -16,8 +16,9 @@ flowchart TB
     end
 
     subgraph Backend Services
-        Django[Django 4.2 REST API Server\n:8000]
-        DB[(SQLite Database)]
+        NodeAPI[Node.js + Express API Server\n:8000]
+        MongoDB[(MongoDB Atlas / Mongoose)]
+        Zod[Zod Validation Schemas]
         Media[Media Storage / Issue Photos]
     end
 
@@ -27,11 +28,13 @@ flowchart TB
         TFIDF[TF-IDF + Naive Bayes Text Classifier]
     end
 
-    FE -->|HTTP / JWT Auth| Django
+    FE -->|HTTP / JWT Auth| NodeAPI
     FE -->|Location Search & Pin| Leaflet
-    FE -->|Auto-Classification Request| FlaskAI
-    Django --> DB
-    Django --> Media
+    FE -->|Auto-Classification Request| NodeAPI
+    NodeAPI -->|Forward AI Analysis| FlaskAI
+    NodeAPI --> Zod
+    NodeAPI --> MongoDB
+    NodeAPI --> Media
     FlaskAI --> MobileNet
     FlaskAI --> TFIDF
 ```
@@ -43,17 +46,19 @@ flowchart TB
 ### 1. Frontend Client (`/frontend`)
 - **Framework**: React 19 + Vite
 - **Routing**: React Router v7
-- **HTTP Client**: Axios with JWT Interceptors (`API.js`)
+- **HTTP Client**: Axios with JWT Interceptors (`api.jsx`)
 - **Interactive Maps**: Leaflet + React-Leaflet
 - **Geocoding & Location**: OpenStreetMap / Nominatim API with Ahmedabad bounding box constraint
 - **Design System**: Vanilla CSS Modules with Glassmorphism aesthetic, Inter font, custom dark/light color tokens, smooth micro-animations, and full responsive design
 
 ### 2. Core Backend API (`/backend`)
-- **Framework**: Django 4.2 + Django REST Framework (DRF)
-- **Authentication**: JWT Auth via `rest_framework_simplejwt` (Access & Refresh tokens)
-- **Database**: SQLite (`db.sqlite3`)
+- **Framework**: Node.js + Express.js
+- **Database**: MongoDB Atlas via Mongoose with 2dsphere geospatial indexing
+- **Validation**: Zod schema validation for authentication, issue reporting, and profile updates
+- **Authentication**: JWT Auth via `jsonwebtoken` (Access & Refresh tokens) + `bcryptjs`
+- **File Uploads**: Multer disk storage for civic issue photo verification
 - **Geofencing**: Strict coordinate validation against the Ahmedabad bounding box (`22.95°N - 23.12°N`, `72.45°E - 72.66°E`)
-- **Seeding Command**: Custom management command `python manage.py seed_ahmedabad` to populate municipal departments and realistic seed issues
+- **Seeding Command**: `npm run seed` to populate municipal departments, demo users, and realistic civic seed issues
 
 ### 3. AI Classifier Service (`/ai_service`)
 - **Framework**: Flask 2.3 + Flask-CORS + Werkzeug 2.3
@@ -67,18 +72,25 @@ flowchart TB
 
 ```
 fixmycity/
-├── ai_service/                  # AI Classification Microservice
+├── ai_service/                  # AI Classification Microservice (Python)
 │   ├── app.py                   # Flask server, MobileNetV2 & NLP classifier logic
 │   ├── test_ai_endpoints.py     # Endpoint verification test suite
 │   ├── requirements.txt         # Dependencies (Flask, CORS, TensorFlow, Scikit-Learn)
 │   └── .env                     # Configuration file
-├── backend/                     # Django Core Backend API
-│   ├── fixmycity_backend/       # Django project settings & root URLs
-│   ├── issues/                  # Issue reporting app (models, serializers, views)
-│   ├── departments/             # Municipal departments app
-│   ├── users/                   # Authentication & custom user profiles
-│   ├── manage.py                # Django CLI tool
-│   └── requirements.txt         # Backend Python dependencies
+├── backend/                     # Node.js + Express REST API Server
+│   ├── server.js                # Express app entrypoint (:8000)
+│   ├── src/
+│   │   ├── config/              # MongoDB Atlas connection (db.js)
+│   │   ├── controllers/         # Auth, Department, and Issue controllers
+│   │   ├── middleware/          # JWT auth, Multer upload, and Zod validation
+│   │   ├── models/              # Mongoose schemas (User, Department, Issue)
+│   │   ├── routes/              # Express API route modules
+│   │   ├── schemas/             # Zod validation schemas
+│   │   ├── seed/                # Seed script for Ahmedabad municipal data
+│   │   └── services/            # Python AI microservice bridge & keyword fallback
+│   ├── media/                   # Uploaded issue photos
+│   ├── package.json             # NPM dependencies & scripts
+│   └── .env                     # MongoDB URI & JWT Secrets
 ├── frontend/                    # React + Vite Web Application
 │   ├── src/
 │   │   ├── components/          # Shared components (Navbar, Home sub-components)
@@ -90,7 +102,6 @@ fixmycity/
 │   ├── index.html               # Main HTML template
 │   ├── package.json             # NPM dependencies & scripts
 │   └── vite.config.js           # Vite server configuration
-├── docs/                        # Flow diagrams and project documentation
 └── PROJECT.md                   # Complete system documentation (This file)
 ```
 
