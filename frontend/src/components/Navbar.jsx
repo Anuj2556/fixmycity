@@ -22,6 +22,7 @@ function Navbar() {
     const [username, setUsername] = useState(() => getStoredUsername());
     const [loggedIn, setLoggedIn] = useState(() => isAuthenticated());
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -50,9 +51,16 @@ function Navbar() {
         };
     }, []);
 
+    // Close mobile menu and dropdown on page route changes
+    useEffect(() => {
+        setMobileMenuOpen(false);
+        setDropdownOpen(false);
+    }, [location.pathname]);
+
     const handleLogout = () => {
         clearAuth();
         setDropdownOpen(false);
+        setMobileMenuOpen(false);
         navigate('/', { replace: true });
     };
 
@@ -75,11 +83,16 @@ function Navbar() {
 
     const isActive = (path) => location.pathname === path;
 
+    const navigateTo = (path) => {
+        setMobileMenuOpen(false);
+        navigate(path);
+    };
+
     return (
         <header className={styles.header}>
             <div className={styles.navbarInner}>
                 {/* Brand */}
-                <div className={styles.brandWrapper} onClick={() => navigate('/')}>
+                <div className={styles.brandWrapper} onClick={() => navigateTo('/')}>
                     <div className={styles.logoMark}>
                         <CivicShieldIcon size={20} />
                     </div>
@@ -89,13 +102,13 @@ function Navbar() {
                     </div>
                 </div>
 
-                {/* Nav Links */}
+                {/* Desktop Nav Links */}
                 <nav className={styles.navLinks}>
                     <button
                         className={`${styles.navLink} ${isActive('/') ? styles.navLinkActive : ''}`}
-                        onClick={() => navigate('/')}
+                        onClick={() => navigateTo('/')}
                     >
-                        Overview
+                        <span>Overview</span>
                     </button>
 
                     {/* Citizen-only Navigation Links */}
@@ -103,7 +116,7 @@ function Navbar() {
                         <>
                             <button
                                 className={`${styles.navLink} ${isActive('/submit-issue') ? styles.navLinkActive : ''}`}
-                                onClick={() => navigate('/submit-issue')}
+                                onClick={() => navigateTo('/submit-issue')}
                             >
                                 <ReportPlusIcon size={16} />
                                 <span>Report Issue</span>
@@ -111,7 +124,7 @@ function Navbar() {
 
                             <button
                                 className={`${styles.navLink} ${isActive('/issues') ? styles.navLinkActive : ''}`}
-                                onClick={() => navigate('/issues')}
+                                onClick={() => navigateTo('/issues')}
                             >
                                 <LayersIcon size={16} />
                                 <span>My Reports</span>
@@ -123,7 +136,7 @@ function Navbar() {
                     {loggedIn && userType === 'department_admin' && (
                         <button
                             className={`${styles.navLink} ${isActive('/departments') ? styles.navLinkActive : ''}`}
-                            onClick={() => navigate('/departments')}
+                            onClick={() => navigateTo('/departments')}
                         >
                             <BuildingOfficeIcon size={16} />
                             <span>Department Portal</span>
@@ -136,14 +149,14 @@ function Navbar() {
                         <>
                             <button
                                 className={`${styles.navLink} ${isActive('/admin') ? styles.navLinkActive : ''}`}
-                                onClick={() => navigate('/admin')}
+                                onClick={() => navigateTo('/admin')}
                             >
                                 <AdminBadgeIcon size={16} />
                                 <span>Operations</span>
                             </button>
                             <button
                                 className={`${styles.navLink} ${isActive('/departments') ? styles.navLinkActive : ''}`}
-                                onClick={() => navigate('/departments')}
+                                onClick={() => navigateTo('/departments')}
                             >
                                 <BuildingOfficeIcon size={16} />
                                 <span>Departments</span>
@@ -153,7 +166,7 @@ function Navbar() {
                     )}
                 </nav>
 
-                {/* Right Area: Theme Toggle & User Auth */}
+                {/* Right Area: Theme Toggle, User Auth, and Mobile Hamburger */}
                 <div className={styles.rightSection}>
                     <button
                         type="button"
@@ -166,7 +179,8 @@ function Navbar() {
                         {theme === 'dark' ? <SunIcon size={16} /> : <MoonIcon size={16} />}
                     </button>
 
-                    <div className={styles.userArea} ref={dropdownRef}>
+                    {/* Desktop User Dropdown / Auth Group */}
+                    <div className={styles.desktopUserArea} ref={dropdownRef}>
                         {loggedIn ? (
                             <>
                                 <button
@@ -201,7 +215,6 @@ function Navbar() {
                                             <span>Profile & Activity</span>
                                         </button>
 
-                                        {/* Citizen dropdown actions */}
                                         {userType === 'citizen' && (
                                             <button
                                                 className={styles.dropdownItem}
@@ -215,7 +228,6 @@ function Navbar() {
                                             </button>
                                         )}
 
-                                        {/* Department Officer dropdown actions */}
                                         {userType === 'department_admin' && (
                                             <button
                                                 className={styles.dropdownItem}
@@ -229,7 +241,6 @@ function Navbar() {
                                             </button>
                                         )}
 
-                                        {/* City Admin dropdown actions */}
                                         {userType === 'admin' && (
                                             <>
                                                 <button
@@ -255,7 +266,6 @@ function Navbar() {
                                             </>
                                         )}
 
-
                                         <div className={styles.dropdownDivider} />
 
                                         <button
@@ -269,17 +279,141 @@ function Navbar() {
                             </>
                         ) : (
                             <div className={styles.authGroup}>
-                                <button className={styles.signInBtn} onClick={() => navigate('/login')}>
+                                <button className={styles.signInBtn} onClick={() => navigateTo('/login')}>
                                     Sign in
                                 </button>
-                                <button className={styles.signUpBtn} onClick={() => navigate('/register')}>
+                                <button className={styles.signUpBtn} onClick={() => navigateTo('/register')}>
                                     Get started
                                 </button>
                             </div>
                         )}
                     </div>
+
+                    {/* Mobile Hamburger Menu Toggle Button */}
+                    <button
+                        type="button"
+                        className={styles.mobileToggleBtn}
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle mobile menu"
+                    >
+                        {mobileMenuOpen ? (
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        ) : (
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="4" y1="7" x2="20" y2="7" />
+                                <line x1="4" y1="12" x2="20" y2="12" />
+                                <line x1="4" y1="17" x2="20" y2="17" />
+                            </svg>
+                        )}
+                    </button>
                 </div>
             </div>
+
+            {/* Mobile Slide-down Navigation Drawer */}
+            {mobileMenuOpen && (
+                <div className={styles.mobileMenu}>
+                    {loggedIn && (
+                        <div className={styles.mobileUserHeader}>
+                            <div className={styles.mobileAvatar}>{getInitials(username)}</div>
+                            <div className={styles.mobileUserInfo}>
+                                <span className={styles.mobileUserName}>{username || 'User'}</span>
+                                <span className={`${styles.mobileUserRole} ${getRoleClass()}`}>
+                                    {getRoleLabel()} • AMC Portal
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={styles.mobileNavLinks}>
+                        <button
+                            className={`${styles.mobileNavItem} ${isActive('/') ? styles.mobileNavItemActive : ''}`}
+                            onClick={() => navigateTo('/')}
+                        >
+                            <span>Overview</span>
+                        </button>
+
+                        {loggedIn && userType === 'citizen' && (
+                            <>
+                                <button
+                                    className={`${styles.mobileNavItem} ${isActive('/submit-issue') ? styles.mobileNavItemActive : ''}`}
+                                    onClick={() => navigateTo('/submit-issue')}
+                                >
+                                    <ReportPlusIcon size={18} />
+                                    <span>Report Civic Issue</span>
+                                </button>
+                                <button
+                                    className={`${styles.mobileNavItem} ${isActive('/issues') ? styles.mobileNavItemActive : ''}`}
+                                    onClick={() => navigateTo('/issues')}
+                                >
+                                    <LayersIcon size={18} />
+                                    <span>My Reports</span>
+                                </button>
+                            </>
+                        )}
+
+                        {loggedIn && userType === 'department_admin' && (
+                            <button
+                                className={`${styles.mobileNavItem} ${isActive('/departments') ? styles.mobileNavItemActive : ''}`}
+                                onClick={() => navigateTo('/departments')}
+                            >
+                                <BuildingOfficeIcon size={18} />
+                                <span>Department Queue</span>
+                                <span className={styles.amcTag}>AMC</span>
+                            </button>
+                        )}
+
+                        {loggedIn && userType === 'admin' && (
+                            <>
+                                <button
+                                    className={`${styles.mobileNavItem} ${isActive('/admin') ? styles.mobileNavItemActive : ''}`}
+                                    onClick={() => navigateTo('/admin')}
+                                >
+                                    <AdminBadgeIcon size={18} />
+                                    <span>Operations Central</span>
+                                </button>
+                                <button
+                                    className={`${styles.mobileNavItem} ${isActive('/departments') ? styles.mobileNavItemActive : ''}`}
+                                    onClick={() => navigateTo('/departments')}
+                                >
+                                    <BuildingOfficeIcon size={18} />
+                                    <span>Department Overviews</span>
+                                    <span className={styles.amcTag}>AMC</span>
+                                </button>
+                            </>
+                        )}
+
+                        {loggedIn && (
+                            <button
+                                className={`${styles.mobileNavItem} ${isActive('/profile') ? styles.mobileNavItemActive : ''}`}
+                                onClick={() => navigateTo('/profile')}
+                            >
+                                <UserIcon size={18} />
+                                <span>Profile & Activity</span>
+                            </button>
+                        )}
+                    </div>
+
+                    <div className={styles.mobileMenuFooter}>
+                        {loggedIn ? (
+                            <button className={styles.mobileSignOutBtn} onClick={handleLogout}>
+                                Sign Out
+                            </button>
+                        ) : (
+                            <div className={styles.mobileAuthGrid}>
+                                <button className={styles.mobileSignInBtn} onClick={() => navigateTo('/login')}>
+                                    Sign In
+                                </button>
+                                <button className={styles.mobileSignUpBtn} onClick={() => navigateTo('/register')}>
+                                    Register Account
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 }

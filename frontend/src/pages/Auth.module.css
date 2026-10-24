@@ -1,41 +1,49 @@
-/* ─── Modern Civic Authentication (Login / Register) ─── */
+/* ─── Modern Civic Authentication (Login / Register) Mobile-First & Desktop ─── */
 
 .body {
   font-family: var(--font-sans);
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 80px 20px 40px;
   position: relative;
   background: var(--bg-page);
   color: var(--text-primary);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .body::before {
   content: '';
   position: absolute;
-  top: -20%;
+  top: -15%;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
+  width: min(600px, 100vw);
   height: 400px;
   background: radial-gradient(circle, var(--brand-glow) 0%, transparent 70%);
   pointer-events: none;
   filter: blur(60px);
-  opacity: 0.6;
+  opacity: 0.55;
+  z-index: 1;
 }
 
+/* ─── Top Navigation Bar ─── */
 .authTopBar {
   position: absolute;
-  top: 24px;
-  left: 24px;
-  right: 24px;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 20;
+  z-index: 25;
 }
 
 .backLink {
@@ -45,69 +53,83 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   transition: all var(--transition-fast);
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 38px;
 }
 
-.backLink:hover {
+.backLink:hover,
+.backLink:active {
   color: var(--text-primary);
   border-color: var(--brand-primary);
   background: var(--bg-card-hover);
+  transform: translateX(-2px);
 }
 
 .themeBtn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
+  min-height: 38px;
 }
 
-.themeBtn:hover {
+.themeBtn:hover,
+.themeBtn:active {
   border-color: var(--brand-primary);
   color: var(--text-primary);
   background: var(--bg-card-hover);
 }
 
+/* ─── Main Container ─── */
 .container {
   max-width: 440px;
   width: 100%;
   position: relative;
   z-index: 10;
-  animation: fadeInUp 0.4s var(--ease-spring);
+  margin: 0 auto;
+  animation: fadeInUp 0.35s var(--ease-spring);
 }
 
 .headerSection {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .logoBadge {
-  width: 44px;
-  height: 44px;
-  margin: 0 auto 14px;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
   background: var(--brand-gradient);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  box-shadow: 0 2px 10px var(--brand-glow);
+  box-shadow: 0 4px 16px var(--brand-glow);
+  transition: transform 0.2s ease;
 }
 
 .brand {
-  font-size: 26px;
+  font-size: 27px;
   color: var(--text-primary);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -122,95 +144,42 @@
   color: var(--text-muted);
   font-size: 13.5px;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 /* ─── Form Card ─── */
 .formCard {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
-  border-radius: var(--radius-2xl);
+  border-radius: 20px;
   padding: 32px 28px;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-/* Demo Logins Well */
-.demoSection {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-bottom: 22px;
-}
-
-.demoLabel {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.demoBadge {
-  color: var(--brand-primary);
-  font-weight: 800;
-  font-size: 9.5px;
-}
-
-.demoButtons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-
-.demoBtn {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 7px 6px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-align: center;
-}
-
-.demoBtn:hover {
-  background: var(--brand-surface);
-  border-color: var(--brand-primary);
-  color: var(--brand-primary);
-}
-
-/* Role Selector */
+/* Role Selector (Register Page) */
 .roleSelector {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.roleSelectorThree {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
 .roleOption {
   background: var(--bg-subtle);
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 10px 6px;
+  padding: 12px 8px;
   text-align: center;
   cursor: pointer;
   transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.roleOption:hover {
+.roleOption:hover,
+.roleOption:active {
   border-color: var(--brand-primary);
   background: var(--bg-card-hover);
 }
@@ -218,98 +187,36 @@
 .roleOptionSelected {
   background: var(--brand-surface) !important;
   border-color: var(--brand-primary) !important;
-  box-shadow: 0 0 10px var(--brand-glow);
+  box-shadow: 0 0 12px var(--brand-glow);
 }
 
 .roleEmoji {
-  font-size: 18px;
-  margin-bottom: 3px;
+  font-size: 20px;
+  margin-bottom: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .roleText {
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
 }
 
-.deptInfoCard {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.deptInfoCardHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.deptInfoCardMeta {
-  color: var(--text-muted);
-  font-size: 11px;
-}
-
-.deptButtonsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.deptQuickBtn {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.deptQuickBtn:hover {
-  background: var(--brand-surface);
-  border-color: var(--brand-primary);
-  color: var(--brand-primary);
-}
-
-.deptQuickBtnActive {
-  background: var(--brand-surface) !important;
-  border-color: var(--brand-primary) !important;
-  color: var(--brand-primary) !important;
-  font-weight: 700;
-}
-
-/* Form Elements */
+/* ─── Form Elements ─── */
 .formGroup {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
   font-weight: 600;
   color: var(--text-secondary);
-  font-size: 12.5px;
+  font-size: 13px;
+  letter-spacing: -0.01em;
 }
 
 .required {
@@ -320,14 +227,17 @@
 .input,
 .select {
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
+  padding: 12px 15px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 16px; /* Crucial: 16px prevents iOS Safari from auto-zooming screen */
   background: var(--bg-input);
   color: var(--text-primary);
   transition: all var(--transition-fast);
   box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 46px;
 }
 
 .input:focus,
@@ -344,15 +254,15 @@
 
 .passwordInput {
   width: 100%;
-  padding: 10px 14px;
-  padding-right: 40px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
+  padding: 12px 46px 12px 15px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 16px; /* Crucial: 16px prevents iOS Safari auto-zoom */
   background: var(--bg-input);
   color: var(--text-primary);
   transition: all var(--transition-fast);
   box-sizing: border-box;
+  min-height: 46px;
 }
 
 .passwordInput:focus {
@@ -363,64 +273,81 @@
 
 .eyeButton {
   position: absolute;
-  right: 8px;
+  right: 4px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  padding: 4px;
+  font-size: 18px;
+  padding: 10px 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-muted);
-  opacity: 0.7;
+  opacity: 0.75;
+  transition: opacity var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.eyeButton:hover {
+.eyeButton:hover,
+.eyeButton:active {
   opacity: 1;
 }
 
 .submitBtn {
   width: 100%;
-  padding: 11px 18px;
+  min-height: 48px;
+  padding: 12px 20px;
   background: var(--brand-gradient);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-fast);
-  margin-top: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 2px 10px var(--brand-glow);
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 2px 12px var(--brand-glow);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.submitBtn:hover {
+.submitBtn:hover,
+.submitBtn:active {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px var(--brand-glow);
+  box-shadow: 0 4px 16px var(--brand-glow);
 }
 
 .submitBtn:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
   transform: none;
 }
 
 .messageError {
-  margin-top: 14px;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 12.5px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  line-height: 1.45;
   font-weight: 600;
   background: var(--priority-critical-bg);
   color: var(--priority-critical);
   border: 1px solid var(--priority-critical-border);
+  animation: shake 0.3s ease-in-out;
 }
 
 .messageSuccess {
-  margin-top: 14px;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 12.5px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  line-height: 1.45;
   font-weight: 600;
   background: var(--brand-surface);
   color: var(--brand-primary);
@@ -429,8 +356,8 @@
 
 .link {
   text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
+  margin-top: 22px;
+  font-size: 13.5px;
   color: var(--text-muted);
 }
 
@@ -439,19 +366,132 @@
   font-weight: 700;
   text-decoration: none;
   margin-left: 4px;
+  padding: 4px;
+  display: inline-block;
 }
 
-.linkAnchor:hover {
+.linkAnchor:hover,
+.linkAnchor:active {
   text-decoration: underline;
+}
+
+/* ─── Mobile Responsiveness (Smartphones & Tablets) ─── */
+@media (max-width: 480px) {
+  .body {
+    padding: 70px 14px 28px;
+    justify-content: flex-start;
+  }
+
+  .authTopBar {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .backLink,
+  .themeBtn {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .headerSection {
+    margin-bottom: 18px;
+  }
+
+  .logoBadge {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 10px;
+  }
+
+  .brand {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 12.5px;
+  }
+
+  .formCard {
+    padding: 24px 18px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .formGroup {
+    margin-bottom: 15px;
+  }
+
+  .input,
+  .passwordInput {
+    padding: 11px 14px;
+    font-size: 16px; /* Guaranteed no-zoom on mobile */
+    min-height: 46px;
+    border-radius: 10px;
+  }
+
+  .passwordInput {
+    padding-right: 44px;
+  }
+
+  .submitBtn {
+    min-height: 48px;
+    font-size: 15px;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+
+  .roleSelector {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .roleOption {
+    padding: 10px 6px;
+  }
+
+  .roleEmoji {
+    font-size: 18px;
+  }
+
+  .roleText {
+    font-size: 11.5px;
+  }
+}
+
+/* For ultra-compact screens (e.g., iPhone SE / Galaxy Fold 320-360px) */
+@media (max-width: 360px) {
+  .body {
+    padding: 65px 10px 20px;
+  }
+
+  .formCard {
+    padding: 20px 14px;
+  }
+
+  .brand {
+    font-size: 22px;
+  }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
 }
