@@ -82,10 +82,134 @@
   color: var(--brand-primary);
 }
 
-.authButtons {
+.desktopAuthButtons {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.mobileNavToggle {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobileNavToggle:hover,
+.mobileNavToggle:active {
+  background: var(--bg-card-hover);
+  border-color: var(--brand-primary);
+}
+
+.mobileHomeMenu {
+  display: none;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-card);
+  box-shadow: var(--shadow-xl);
+  padding: 18px 20px 24px;
+  animation: slideDownHome 0.22s var(--ease-spring);
+}
+
+.mobileHomeLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mobileHomeLinks a {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  min-height: 46px;
+}
+
+.mobileHomeLinks a:hover,
+.mobileHomeLinks a:active {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+
+.mobileHomeActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.mobileHomeActions .btnPrimary,
+.mobileHomeActions .btnOutline {
+  width: 100%;
+  justify-content: center;
+  min-height: 46px;
+  font-size: 14.5px;
+}
+
+.mobileAuthRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mobileSignOutBtn {
+  width: 100%;
+  min-height: 44px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  .navLinks {
+    display: none;
+  }
+
+  .desktopAuthButtons {
+    display: none;
+  }
+
+  .mobileNavToggle {
+    display: flex;
+  }
+
+  .mobileHomeMenu {
+    display: block;
+  }
+
+  .headerInner {
+    min-height: 56px;
+    padding: 0 16px;
+  }
+
+  .logoText {
+    font-size: 14px;
+  }
+}
+
+@keyframes slideDownHome {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Hero Section ─── */
