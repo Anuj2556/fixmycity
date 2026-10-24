@@ -6,7 +6,8 @@ const getDepartments = async (req, res) => {
     const departments = await Department.find().sort({ name: 1 });
     return res.status(200).json(departments);
   } catch (error) {
-    return res.status(500).json({ error: 'Failed to fetch departments' });
+    console.error('[Departments Error]', error.message);
+    return res.status(500).json({ error: 'Failed to fetch departments', detail: error.message });
   }
 };
 
