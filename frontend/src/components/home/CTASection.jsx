@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../../pages/Home.module.css';
 import { ArrowRightIcon } from './icons';
 
@@ -16,13 +17,13 @@ export default function CTASection() {
           Whether it is an open pothole on SG Highway, a water main leak in Maninagar, or an unlit street corner, your report triggers immediate action.
         </p>
         <div className={styles.ctaButtons}>
-          <a href="/submit-issue" className={styles.btnPrimary}>
+          <Link to="/submit-issue" className={styles.btnPrimary}>
             <span>File a Report Now</span>
             <ArrowRightIcon />
-          </a>
-          <a href="/issues" className={styles.btnOutline}>
+          </Link>
+          <Link to="/issues" className={styles.btnOutline}>
             <span>Browse Civic Feed</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

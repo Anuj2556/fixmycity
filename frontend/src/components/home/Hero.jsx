@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../../pages/Home.module.css';
 import { ArrowRightIcon, SparklesIcon, CheckCircleIcon, CameraIcon, BotIcon, MapPinIcon } from './icons';
 import { getUserRole } from '../../services/api';
@@ -91,18 +92,18 @@ export default function Hero() {
           </p>
 
           <div className={styles.heroButtons}>
-            <a href="/submit-issue" className={styles.btnPrimary}>
+            <Link to="/submit-issue" className={styles.btnPrimary}>
               <span>Report Civic Issue</span>
               <ArrowRightIcon />
-            </a>
+            </Link>
             {isStaff ? (
-              <a href="/departments" className={styles.btnOutline}>
+              <Link to="/departments" className={styles.btnOutline}>
                 <span>Explore Department Portals</span>
-              </a>
+              </Link>
             ) : (
-              <a href="/issues" className={styles.btnOutline}>
+              <Link to="/issues" className={styles.btnOutline}>
                 <span>Track Civic Issues</span>
-              </a>
+              </Link>
             )}
           </div>
 
