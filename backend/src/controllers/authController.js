@@ -7,9 +7,18 @@ const register = async (req, res) => {
   try {
     const { username, password, email, role = 'citizen', phone = '', address = '', department } = req.body;
 
-    const existingUser = await User.findOne({ username: username.toLowerCase() });
+    if (!username || !username.trim()) {
+      return res.status(400).json({ detail: 'Username is required.' });
+    }
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({ detail: 'Password must be at least 6 characters long.' });
+    }
+
+    const cleanUsername = username.trim().toLowerCase();
+    const existingUser = await User.findOne({ username: cleanUsername });
     if (existingUser) {
-      return res.status(400).json({ error: 'Username already exists' });
+      return res.status(400).json({ detail: `Username "${username}" is already registered. Please sign in or use a different username.` });
     }
 
     let deptId = null;
@@ -23,12 +32,12 @@ const register = async (req, res) => {
     }
 
     const user = new User({
-      username: username.toLowerCase(),
+      username: cleanUsername,
       password,
-      email: email || '',
+      email: email ? email.trim() : '',
       role: ['citizen', 'admin', 'department_admin'].includes(role) ? role : 'citizen',
-      phone: phone || '',
-      address: address || '',
+      phone: phone ? phone.trim() : '',
+      address: address ? address.trim() : '',
       department: deptId,
       is_staff: role === 'admin',
     });
@@ -38,29 +47,55 @@ const register = async (req, res) => {
     return res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     console.error('Register error:', error);
-    return res.status(500).json({ error: 'Failed to register user' });
+    return res.status(500).json({
+      detail: `Registration failed: ${error.message || 'Database connection error'}.`,
+      error: error.message,
+    });
   }
 };
 
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    if (!username || !username.trim()) {
+      return res.status(400).json({ detail: 'Please enter your username.' });
+    }
+
+    if (!password) {
+      return res.status(400).json({ detail: 'Please enter your password.' });
+    }
+
     const lowerUsername = username.trim().toLowerCase();
 
-    const user = await User.findOne({ username: lowerUsername }).populate('department');
+    // Fast lookup without unnecessary population overhead
+    const user = await User.findOne({ username: lowerUsername });
 
     if (!user) {
-      return res.status(401).json({ detail: 'No active account found with the given credentials' });
+      return res.status(401).json({
+        detail: `No account found for username "${username}". Please check for typos or create an account.`,
+      });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ detail: 'No active account found with the given credentials' });
+      return res.status(401).json({
+        detail: 'Incorrect password entered. Please check your password and try again.',
+      });
+    }
+
+    // Lazy load department only if user belongs to one (officer)
+    let deptName = null;
+    let deptId = null;
+    if (user.department) {
+      const deptDoc = await Department.findById(user.department);
+      if (deptDoc) {
+        deptName = deptDoc.name;
+        deptId = deptDoc._id.toString();
+      }
     }
 
     const tokens = generateTokens(user);
-    const deptName = user.department ? user.department.name : null;
-    const deptId = user.department ? user.department._id.toString() : null;
 
     return res.status(200).json({
       access: tokens.access,
@@ -78,7 +113,10 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    return res.status(500).json({ error: 'Authentication failed' });
+    return res.status(500).json({
+      detail: `Authentication failed: ${error.message || 'Database connection error'}.`,
+      error: error.message,
+    });
   }
 };
 

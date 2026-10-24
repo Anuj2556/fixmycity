@@ -101,15 +101,13 @@ function Register() {
                         user.department_name
                     );
 
-                    setTimeout(() => {
-                        if (role === 'admin') {
-                            navigate('/admin', { replace: true });
-                        } else if (role === 'department_admin') {
-                            navigate('/departments', { replace: true });
-                        } else {
-                            navigate('/issues', { replace: true });
-                        }
-                    }, 800);
+                    if (role === 'admin') {
+                        navigate('/admin', { replace: true });
+                    } else if (role === 'department_admin') {
+                        navigate('/departments', { replace: true });
+                    } else {
+                        navigate('/issues', { replace: true });
+                    }
                 } else {
                     navigate('/login');
                 }
