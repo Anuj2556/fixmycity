@@ -144,20 +144,24 @@ npm run dev
 
 ---
 
-## 👥 Default Demo Accounts & Roles
+## 👥 User Roles & Access Control
 
-The platform strictly enforces **Least-Privilege Role-Based Access Control (RBAC)**:
+The platform strictly enforces **Least-Privilege Role-Based Access Control (RBAC)** across three distinct tiers:
 
-| Role | Username | Password | Access Privileges |
-| :--- | :--- | :--- | :--- |
-| **City Administrator** | `adminuser` | `adminpass123` | Full municipal oversight, cross-department analytics, global issue assignment. |
-| **Roads Officer** | `officer_roads` | `officerpass123` | Restricted strictly to the **Roads & Infrastructure Department** queue and status updates. |
-| **Water Officer** | `officer_water` | `officerpass123` | Restricted strictly to the **Water Supply & Sewerage Board** queue and status updates. |
-| **Electricity Officer** | `officer_electricity` | `officerpass123` | Restricted strictly to the **Street Lighting & Power Department** queue. |
-| **Sanitation Officer** | `officer_sanitation` | `officerpass123` | Restricted strictly to the **Solid Waste Management** queue. |
-| **Citizen** | `citizen1` | `citizenpass123` | Can submit issues, track own submitted reports, and edit personal profile. |
+| Role | Typical Identity | Scope & Privileges |
+| :--- | :--- | :--- |
+| **City Administrator** | `adminuser` | Full municipal oversight, cross-department analytics, global issue assignment, and emergency escalation. |
+| **Department Officer** | `officer_<dept>` | Scoped strictly to the specific department (Roads, Water, Electricity, Sanitation, Health) queue and lifecycle resolution. |
+| **Citizen** | Registered users | Submit civic issues, upload photos, geolocate pins, track resolution status, and manage profile. |
 
-*(New citizen accounts can also be created freely via the `/register` page).*
+> 🔒 **Deployment Security Note**: Hardcoded test passwords and quick-login bypasses have been completely removed.
+> - To initialize departments and bootstrap initial administrative accounts for a fresh deployment, run:
+>   ```bash
+>   cd backend
+>   npm run seed
+>   ```
+> - Initial passwords can be customized before running the seed script via `INITIAL_ADMIN_PASSWORD` and `INITIAL_OFFICER_PASSWORD` environment variables in `backend/.env`.
+> - Citizens register securely with their own credentials via the `/register` portal.
 
 ---
 
