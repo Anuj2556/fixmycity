@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import API, { setAuthToken, fetchDepartments } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import { CivicShieldIcon, SunIcon, MoonIcon, UserIcon, BuildingOfficeIcon } from '../components/common/Icons';
@@ -288,7 +288,7 @@ function Register() {
                     )}
 
                     <p className={styles.link}>
-                        Already registered? <a href="/login" className={styles.linkAnchor}>Sign in here</a>
+                        Already registered? <Link to="/login" className={styles.linkAnchor}>Sign in here</Link>
                     </p>
                 </div>
             </div>

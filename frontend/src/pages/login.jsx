@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import API, { setAuthToken, fetchDepartments } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import {
@@ -286,9 +286,9 @@ function Login() {
 
                     <p className={styles.link}>
                         {selectedRole === 'department_admin' ? (
-                            <>Need an officer account? <a href="/register" className={styles.linkAnchor}>Register Department Officer</a></>
+                            <>Need an officer account? <Link to="/register" className={styles.linkAnchor}>Register Department Officer</Link></>
                         ) : (
-                            <>New to FixMyCity Ahmedabad? <a href="/register" className={styles.linkAnchor}>Create account</a></>
+                            <>New to FixMyCity Ahmedabad? <Link to="/register" className={styles.linkAnchor}>Create account</Link></>
                         )}
                     </p>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styles from '../../pages/Home.module.css';
 import { clearAuth, isAuthenticated } from '../../services/api';
 
@@ -27,12 +27,12 @@ function Nav() {
   return (
     <header className={styles.header}>
       <div className={`${styles.container} ${styles.headerInner}`}>
-        <a href="/" className={styles.logo}>
+        <Link to="/" className={styles.logo}>
           <span className={styles.logoIcon} />
           <span className={styles.logoText}>
             Fix<span>My</span>City — Ahmedabad
           </span>
-        </a>
+        </Link>
         <nav className={styles.navLinks}>
           <a href="#features">Features</a>
           <a href="#stats">Impact</a>
@@ -52,12 +52,12 @@ function Nav() {
             </>
           ) : (
             <>
-              <a href="/login" className={styles.btnOutline}>
+              <Link to="/login" className={styles.btnOutline}>
                 Login
-              </a>
-              <a href="/register" className={styles.btnPrimary}>
+              </Link>
+              <Link to="/register" className={styles.btnPrimary}>
                 Register
-              </a>
+              </Link>
             </>
           )}
         </div>
