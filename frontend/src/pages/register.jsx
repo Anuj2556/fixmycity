@@ -6,12 +6,18 @@ import { CivicShieldIcon, SunIcon, MoonIcon, UserIcon, BuildingOfficeIcon } from
 import styles from './Auth.module.css';
 
 const getErrorMessage = (err) => {
-    const data = err?.response?.data;
+    if (!err.response) {
+        return 'Server is spinning up (Render free tier) or temporarily unreachable. Please wait 15–30 seconds and try again.';
+    }
+    const { status, data } = err.response;
     if (typeof data === 'string') return data;
     if (data?.detail) return data.detail;
     if (data?.error) return data.error;
     if (data?.message) return data.message;
-    return 'Registration failed. Please check your details.';
+    if (status === 400) return 'Username or registration detail already exists. Please try a different username.';
+    if (status === 500) return 'Database connection error. Please verify MongoDB Atlas IP access is set to 0.0.0.0/0.';
+    if (status === 502 || status === 503 || status === 504) return 'Backend is waking up on Render. Please retry in 15 seconds.';
+    return 'Registration failed. Please check your details and try again.';
 };
 
 function Register() {

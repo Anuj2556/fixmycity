@@ -13,12 +13,18 @@ import {
 import styles from './Auth.module.css';
 
 const getErrorMessage = (err) => {
-    const data = err?.response?.data;
+    if (!err.response) {
+        return 'Server is spinning up (Render free tier) or temporarily unreachable. Please wait 15–30 seconds and try again.';
+    }
+    const { status, data } = err.response;
     if (typeof data === 'string') return data;
     if (data?.detail) return data.detail;
     if (data?.error) return data.error;
     if (data?.message) return data.message;
-    return 'Invalid username or password.';
+    if (status === 401) return 'Invalid username or password. Please check your credentials.';
+    if (status === 500) return 'Database or server error. Please ensure MongoDB Atlas allows connection from anywhere (0.0.0.0/0).';
+    if (status === 502 || status === 503 || status === 504) return 'Backend is waking up on Render. Please retry in 15 seconds.';
+    return 'Authentication failed. Please check your network and try again.';
 };
 
 
